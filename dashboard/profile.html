@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Profile</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Manage your account information</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Profile Card -->
+          <div class="lg:col-span-1">
+            <div class="dash-card text-center" id="dash-profile-card">
+              <div class="skeleton w-20 h-20 rounded-full mx-auto mb-3"></div>
+              <div class="skeleton h-5 w-32 mx-auto mb-2"></div>
+              <div class="skeleton h-3 w-24 mx-auto"></div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="dash-card mt-4" id="dash-quick-stats">
+              <h3 class="font-semibold mb-3 text-sm" style="font-family:'Outfit';color:var(--color-text)">Activity</h3>
+              <div class="skeleton h-4 w-full mb-2"></div>
+              <div class="skeleton h-4 w-3/4 mb-2"></div>
+              <div class="skeleton h-4 w-2/3"></div>
+            </div>
+          </div>
+
+          <!-- Edit Form -->
+          <div class="lg:col-span-2">
+            <div class="dash-card">
+              <h3 class="font-semibold mb-5" style="font-family:'Outfit';color:var(--color-text)">Edit Profile</h3>
+              <form id="dash-profile-form" onsubmit="event.preventDefault();dashToast('Profile updated!','success')">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div class="input-group"><label class="input-label">First Name</label><input id="dp-fname" class="glass-input" placeholder="First name"></div>
+                  <div class="input-group"><label class="input-label">Last Name</label><input id="dp-lname" class="glass-input" placeholder="Last name"></div>
+                </div>
+                <div class="input-group"><label class="input-label">Email</label><input id="dp-email" type="email" class="glass-input" placeholder="Email"></div>
+                <div class="input-group"><label class="input-label">Phone</label><input id="dp-phone" class="glass-input" placeholder="Phone number"></div>
+                <div class="input-group"><label class="input-label">Username</label><input id="dp-username" class="glass-input" readonly style="opacity:0.6"></div>
+                <div class="input-group"><label class="input-label">Bio</label><textarea id="dp-bio" class="glass-input" rows="3" placeholder="Tell us about yourself..." style="resize:vertical"></textarea></div>
+
+                <hr class="my-5" style="border-color:var(--glass-border)">
+                <h4 class="font-semibold mb-4 text-sm" style="color:var(--color-text)">Address</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div class="input-group"><label class="input-label">City</label><input id="dp-city" class="glass-input" placeholder="City"></div>
+                  <div class="input-group"><label class="input-label">State</label><input id="dp-state" class="glass-input" placeholder="State"></div>
+                </div>
+                <div class="input-group"><label class="input-label">Country</label><input id="dp-country" class="glass-input" placeholder="Country"></div>
+
+                <hr class="my-5" style="border-color:var(--glass-border)">
+                <h4 class="font-semibold mb-4 text-sm" style="color:var(--color-text)">Change Password</h4>
+                <div class="input-group"><label class="input-label">Current Password</label><input type="password" class="glass-input" placeholder="Enter current password"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="input-group"><label class="input-label">New Password</label><input type="password" class="glass-input" placeholder="New password"></div>
+                  <div class="input-group"><label class="input-label">Confirm Password</label><input type="password" class="glass-input" placeholder="Confirm password"></div>
+                </div>
+
+                <div class="flex gap-3 mt-5">
+                  <button type="submit" class="btn-primary rounded-xl flex-1">Save Changes</button>
+                  <button type="button" class="btn-secondary" onclick="loadDashProfile()">Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard([{label:'Profile'}]);
+      loadDashProfile();
+    });
+
+    async function loadDashProfile() {
+      const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
+      const userId = user?.id || 1; // fallback to user 1 for demo
+
+      try {
+        const u = await api.getUser(userId);
+
+        // Profile card
+        document.getElementById('dash-profile-card').innerHTML = `
+          <img src="${u.image}" alt="${u.firstName}" class="w-20 h-20 rounded-full object-cover mx-auto mb-3 ring-4" style="ring-color:var(--glass-border)">
+          <h3 class="font-bold text-lg" style="font-family:'Outfit';color:var(--color-text)">${u.firstName} ${u.lastName}</h3>
+          <p class="text-xs mb-2" style="color:var(--color-text-muted)">@${u.username}</p>
+          <div class="flex flex-wrap gap-1.5 justify-center">
+            <span class="badge text-xs">${u.role || 'User'}</span>
+            <span class="badge text-xs">${u.company?.department || 'N/A'}</span>
+          </div>
+          <div class="mt-4 pt-3" style="border-top:1px solid var(--glass-border)">
+            <p class="text-xs" style="color:var(--color-text-muted)">${u.email}</p>
+            <p class="text-xs mt-1" style="color:var(--color-text-muted)">${u.phone || ''}</p>
+          </div>
+        `;
+
+        // Quick stats
+        const [posts, todos] = await Promise.all([
+          api.get('/posts/user/' + userId),
+          api.get('/todos/user/' + userId)
+        ]);
+        const completedTodos = (todos.todos || []).filter(t => t.completed).length;
+        document.getElementById('dash-quick-stats').innerHTML = `
+          <h3 class="font-semibold mb-3 text-sm" style="font-family:'Outfit';color:var(--color-text)">Activity</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between text-sm"><span style="color:var(--color-text-muted)">Posts</span><span class="font-medium" style="color:var(--color-text)">${posts.total || 0}</span></div>
+            <div class="flex justify-between text-sm"><span style="color:var(--color-text-muted)">Todos</span><span class="font-medium" style="color:var(--color-text)">${todos.total || 0}</span></div>
+            <div class="flex justify-between text-sm"><span style="color:var(--color-text-muted)">Completed</span><span class="font-medium" style="color:var(--success)">${completedTodos}</span></div>
+            <div class="progress-bar mt-2"><div class="progress-fill" style="width:${todos.total ? Math.round(completedTodos/todos.total*100) : 0}%"></div></div>
+            <p class="text-xs text-center" style="color:var(--color-text-muted)">${todos.total ? Math.round(completedTodos/todos.total*100) : 0}% tasks completed</p>
+          </div>
+        `;
+
+        // Fill form
+        document.getElementById('dp-fname').value = u.firstName || '';
+        document.getElementById('dp-lname').value = u.lastName || '';
+        document.getElementById('dp-email').value = u.email || '';
+        document.getElementById('dp-phone').value = u.phone || '';
+        document.getElementById('dp-username').value = u.username || '';
+        document.getElementById('dp-city').value = u.address?.city || '';
+        document.getElementById('dp-state').value = u.address?.state || '';
+        document.getElementById('dp-country').value = u.address?.country || '';
+
+      } catch (e) {
+        console.error('Profile error:', e);
+        document.getElementById('dash-profile-card').innerHTML = '<p class="text-center py-4" style="color:var(--color-text-muted)">Failed to load</p>';
+      }
+    }
+  </script>
+</body>
+</html>

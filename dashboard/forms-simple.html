@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Inputs — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Simple Inputs</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">All basic form input types with glass styling</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Text Inputs -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Text Inputs</h3>
+            <div class="input-group">
+              <label class="input-label">Default Input</label>
+              <input type="text" class="glass-input" placeholder="Enter text...">
+            </div>
+            <div class="input-group">
+              <label class="input-label">With Helper Text</label>
+              <input type="text" class="glass-input" placeholder="Username">
+              <div class="input-helper">Choose a unique username</div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Disabled Input</label>
+              <input type="text" class="glass-input" placeholder="Disabled" disabled style="opacity:0.5;cursor:not-allowed">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Readonly Input</label>
+              <input type="text" class="glass-input" value="Read-only value" readonly>
+            </div>
+          </div>
+
+          <!-- Email, Password, Number -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Email, Password & Number</h3>
+            <div class="input-group">
+              <label class="input-label">Email</label>
+              <input type="email" class="glass-input" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Password</label>
+              <div class="relative">
+                <input type="password" id="demo-pass" class="glass-input pr-10" placeholder="••••••••">
+                <button type="button" onclick="const i=document.getElementById('demo-pass');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2" style="color:var(--color-text-muted);background:none;border:none;cursor:pointer">👁</button>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Number</label>
+              <input type="number" class="glass-input" placeholder="0" min="0" max="100" step="1">
+            </div>
+          </div>
+
+          <!-- Textarea -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Textarea</h3>
+            <div class="input-group">
+              <label class="input-label">Default Textarea</label>
+              <textarea class="glass-input" rows="3" placeholder="Enter your message..." style="resize:vertical"></textarea>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Auto-resize (3-6 rows)</label>
+              <textarea class="glass-input" rows="3" placeholder="Type here..." style="resize:vertical;min-height:5rem;max-height:12rem" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+            </div>
+          </div>
+
+          <!-- Select -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Select / Dropdown</h3>
+            <div class="input-group">
+              <label class="input-label">Default Select</label>
+              <select class="glass-input">
+                <option value="">Choose an option</option>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Disabled Select</label>
+              <select class="glass-input" disabled style="opacity:0.5;cursor:not-allowed">
+                <option>Disabled option</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Checkboxes & Radios -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Checkboxes & Radios</h3>
+            <div class="space-y-3 mb-5">
+              <label class="flex items-center gap-3 cursor-pointer text-sm" style="color:var(--color-text-secondary)">
+                <input type="checkbox" checked class="w-4 h-4 rounded accent-current" style="accent-color:var(--btn-bg)"> Checked option
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm" style="color:var(--color-text-secondary)">
+                <input type="checkbox" class="w-4 h-4 rounded" style="accent-color:var(--btn-bg)"> Unchecked option
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm" style="color:var(--color-text-secondary);opacity:0.5">
+                <input type="checkbox" disabled class="w-4 h-4 rounded"> Disabled option
+              </label>
+            </div>
+            <div class="space-y-3">
+              <label class="flex items-center gap-3 cursor-pointer text-sm" style="color:var(--color-text-secondary)">
+                <input type="radio" name="demo-radio" checked class="w-4 h-4" style="accent-color:var(--btn-bg)"> Radio A
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm" style="color:var(--color-text-secondary)">
+                <input type="radio" name="demo-radio" class="w-4 h-4" style="accent-color:var(--btn-bg)"> Radio B
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm" style="color:var(--color-text-secondary)">
+                <input type="radio" name="demo-radio" class="w-4 h-4" style="accent-color:var(--btn-bg)"> Radio C
+              </label>
+            </div>
+          </div>
+
+          <!-- Toggle Switches & Date/Time -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Toggles & Date/Time</h3>
+            <div class="space-y-4 mb-5">
+              <div class="flex items-center justify-between">
+                <span class="text-sm" style="color:var(--color-text-secondary)">Enable notifications</span>
+                <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm" style="color:var(--color-text-secondary)">Dark mode</span>
+                <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm" style="color:var(--color-text-secondary)">Auto-save</span>
+                <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Date Input</label>
+              <input type="date" class="glass-input">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Time Input</label>
+              <input type="time" class="glass-input">
+            </div>
+          </div>
+
+          <!-- Input with Prefix/Suffix -->
+          <div class="dash-card lg:col-span-2">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Prefix & Suffix Inputs</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="input-group">
+                <label class="input-label">With Prefix</label>
+                <div class="input-prefix">
+                  <span class="prefix">https://</span>
+                  <input type="text" class="glass-input" placeholder="example.com">
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">With Suffix</label>
+                <div class="input-suffix">
+                  <input type="text" class="glass-input" placeholder="username">
+                  <span class="suffix">@gmail.com</span>
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Currency</label>
+                <div class="input-prefix">
+                  <span class="prefix">$</span>
+                  <input type="number" class="glass-input" placeholder="0.00">
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Weight</label>
+                <div class="input-suffix">
+                  <input type="number" class="glass-input" placeholder="0">
+                  <span class="suffix">kg</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Forms'},{label:'Simple Inputs'}]));</script>
+</body>
+</html>

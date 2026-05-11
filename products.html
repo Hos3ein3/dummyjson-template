@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — DummyStore</title>
+  <meta name="description" content="Browse and search thousands of products. Filter by category, sort by price or rating.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], heading: ['Outfit','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div id="navbar-container"></div>
+
+  <!-- Page Header -->
+  <section class="pt-8 pb-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2 fade-in" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Products</h1>
+      <p class="text-sm fade-in" style="color: var(--color-text-muted);">
+        Showing <span id="results-count">—</span> products
+      </p>
+    </div>
+  </section>
+
+  <!-- Search & Filters -->
+  <section class="py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-card rounded-2xl p-4 md:p-6 fade-in">
+        <div class="flex flex-col md:flex-row gap-4">
+          <!-- Search -->
+          <div class="flex-1 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2" style="color:var(--color-text-muted)">${icons.search}</span>
+            <input type="text" id="search-input" placeholder="Search products..." class="glass-input pl-10" onkeyup="handleSearch(event)">
+          </div>
+          <!-- Sort -->
+          <select id="sort-select" class="glass-input w-full md:w-48" onchange="handleSort()">
+            <option value="">Sort by</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating-desc">Top Rated</option>
+            <option value="title-asc">Name: A → Z</option>
+          </select>
+        </div>
+
+        <!-- Category chips -->
+        <div class="flex flex-wrap gap-2 mt-4" id="category-chips">
+          <span class="chip active" onclick="filterByCategory('')">All</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <section class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="products-grid">
+        <!-- Skeleton loaders -->
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination-container"></div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/products.js"></script>
+</body>
+</html>

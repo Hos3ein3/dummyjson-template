@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — DummyStore</title>
+  <meta name="description" content="View and manage your DummyStore profile.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div id="navbar-container"></div>
+
+  <section class="py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Profile Header -->
+      <div class="glass-card rounded-3xl p-6 md:p-8 mb-6 fade-in" id="profile-header">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="skeleton w-24 h-24 rounded-full"></div>
+          <div class="flex-1 text-center md:text-left"><div class="skeleton h-6 w-48 mb-2 mx-auto md:mx-0"></div><div class="skeleton h-4 w-32 mx-auto md:mx-0"></div></div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-1 mb-6 overflow-x-auto" id="profile-tabs">
+        <button class="chip active" onclick="switchProfileTab('info')">Personal Info</button>
+        <button class="chip" onclick="switchProfileTab('posts')">My Posts</button>
+        <button class="chip" onclick="switchProfileTab('todos')">My Todos</button>
+        <button class="chip" onclick="switchProfileTab('settings')">Settings</button>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="tab-info" class="profile-tab">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="glass-card rounded-2xl p-6 fade-in" id="personal-info"><div class="skeleton h-4 w-full mb-3"></div><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-4 w-2/3"></div></div>
+          <div class="glass-card rounded-2xl p-6 fade-in" id="address-info"><div class="skeleton h-4 w-full mb-3"></div><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-4 w-2/3"></div></div>
+          <div class="glass-card rounded-2xl p-6 fade-in" id="company-info"><div class="skeleton h-4 w-full mb-3"></div><div class="skeleton h-4 w-3/4"></div></div>
+          <div class="glass-card rounded-2xl p-6 fade-in" id="bank-info"><div class="skeleton h-4 w-full mb-3"></div><div class="skeleton h-4 w-3/4"></div></div>
+        </div>
+      </div>
+
+      <div id="tab-posts" class="profile-tab" style="display:none">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="user-posts"><div class="glass-card rounded-2xl p-5"><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-3 w-full mb-1"></div><div class="skeleton h-3 w-2/3"></div></div></div>
+      </div>
+
+      <div id="tab-todos" class="profile-tab" style="display:none">
+        <div class="space-y-3" id="user-todos"><div class="glass-card rounded-xl p-4"><div class="skeleton h-4 w-3/4"></div></div></div>
+      </div>
+
+      <div id="tab-settings" class="profile-tab" style="display:none">
+        <div class="glass-card rounded-2xl p-6 md:p-8 max-w-lg fade-in">
+          <h3 class="text-lg font-bold mb-5" style="font-family:'Outfit';color:var(--color-text)">Account Settings</h3>
+          <div class="space-y-4">
+            <div><label class="block text-sm font-medium mb-1.5" style="color:var(--color-text)">Display Name</label><input id="edit-name" class="glass-input" placeholder="Your name"></div>
+            <div><label class="block text-sm font-medium mb-1.5" style="color:var(--color-text)">Email</label><input id="edit-email" type="email" class="glass-input" placeholder="Your email"></div>
+            <div><label class="block text-sm font-medium mb-1.5" style="color:var(--color-text)">Phone</label><input id="edit-phone" class="glass-input" placeholder="Your phone"></div>
+            <div class="flex items-center justify-between pt-2"><span class="text-sm" style="color:var(--color-text-secondary)">Email notifications</span><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="flex items-center justify-between"><span class="text-sm" style="color:var(--color-text-secondary)">Dark mode</span><label class="toggle"><input type="checkbox" onchange="Theme.toggle()"><span class="toggle-slider"></span></label></div>
+            <button class="btn-primary w-full py-2.5 rounded-xl mt-2" onclick="showToast('Profile updated!','success')">Save Changes</button>
+            <div class="pt-3" style="border-top:1px solid var(--glass-border)">
+              <button class="w-full py-2.5 rounded-xl text-sm font-medium" style="background:rgba(239,68,68,0.08);color:var(--error);border:1px solid rgba(239,68,68,0.2)" onclick="if(confirm('Delete your account?'))showToast('Account deletion is simulated','error')">Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

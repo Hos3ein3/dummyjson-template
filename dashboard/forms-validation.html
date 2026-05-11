@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validation — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Input Validation</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Real-time validation, error/success states, password strength</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Real-time Validation Form -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Real-time Validation</h3>
+            <form id="validation-form" onsubmit="event.preventDefault();if(validateForm('validation-form'))dashToast('Form is valid!','success');else dashToast('Fix errors first','error')">
+              <div class="input-group">
+                <label class="input-label">Full Name <span class="required">*</span></label>
+                <input class="glass-input" data-validate="required|min:3" oninput="validateField(this)" placeholder="Min 3 characters">
+                <div class="input-error-msg"></div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Email <span class="required">*</span></label>
+                <input type="email" class="glass-input" data-validate="required|email" oninput="validateField(this)" placeholder="valid@email.com">
+                <div class="input-error-msg"></div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Phone</label>
+                <input class="glass-input" data-validate="phone" oninput="validateField(this)" placeholder="+1 555 000 0000">
+                <div class="input-error-msg"></div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Website</label>
+                <input class="glass-input" data-validate="url" oninput="validateField(this)" placeholder="https://example.com">
+                <div class="input-error-msg"></div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Bio <span class="required">*</span></label>
+                <textarea class="glass-input" rows="3" data-validate="required|min:10|max:200" oninput="validateField(this)" placeholder="Tell us about yourself (10-200 chars)"></textarea>
+                <div class="input-error-msg"></div>
+              </div>
+              <button type="submit" class="btn-primary rounded-xl w-full py-2.5">Validate & Submit</button>
+            </form>
+          </div>
+
+          <!-- Password Strength -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Password Strength Meter</h3>
+            <div class="input-group">
+              <label class="input-label">Create Password <span class="required">*</span></label>
+              <input type="password" id="pw-strength" class="glass-input" placeholder="Type your password" oninput="updateStrengthBar(this,'pw-bar')">
+              <div class="strength-bar mt-2" id="pw-bar">
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+              </div>
+              <div class="flex justify-between mt-1">
+                <span class="text-xs" id="pw-bar-label" style="font-weight:600"></span>
+                <span class="text-xs" style="color:var(--color-text-muted)">Use uppercase, numbers & symbols</span>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Confirm Password <span class="required">*</span></label>
+              <input type="password" id="pw-confirm" class="glass-input" placeholder="Repeat password" oninput="checkMatch()">
+              <div class="input-error-msg" id="pw-match-msg"></div>
+            </div>
+
+            <hr class="my-5" style="border-color:var(--glass-border)">
+
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Validation States</h3>
+            <div class="input-group has-success">
+              <label class="input-label">✅ Success State</label>
+              <input class="glass-input" value="valid@email.com" readonly>
+              <div class="input-helper" style="color:var(--success)">Email is available</div>
+            </div>
+            <div class="input-group has-error">
+              <label class="input-label">❌ Error State</label>
+              <input class="glass-input" value="invalid">
+              <div class="input-error-msg" style="display:block">Please enter a valid email address</div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">⚠️ Warning State</label>
+              <input class="glass-input" value="john123" style="border-color:var(--star)">
+              <div class="input-helper" style="color:var(--star)">Username may already be taken</div>
+            </div>
+          </div>
+
+          <!-- Error Summary -->
+          <div class="dash-card lg:col-span-2">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Form Error Summary</h3>
+            <div class="alert alert-error mb-4">
+              <span>⚠️</span>
+              <div>
+                <p class="font-semibold mb-1">Please fix the following errors:</p>
+                <ul class="list-disc list-inside space-y-0.5 text-sm" style="color:var(--color-text-secondary)">
+                  <li>First name is required</li>
+                  <li>Email format is invalid</li>
+                  <li>Password must be at least 8 characters</li>
+                  <li>Please agree to the terms</li>
+                </ul>
+              </div>
+            </div>
+            <div class="alert alert-success">
+              <span>✅</span>
+              <div>
+                <p class="font-semibold">All validations passed!</p>
+                <p class="text-sm mt-0.5" style="color:var(--color-text-secondary)">Form is ready to submit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script src="js/forms.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Forms'},{label:'Validation'}]));
+    function checkMatch() {
+      const pw = document.getElementById('pw-strength').value;
+      const conf = document.getElementById('pw-confirm').value;
+      const msg = document.getElementById('pw-match-msg');
+      const group = document.getElementById('pw-confirm').closest('.input-group');
+      if (!conf) { group.classList.remove('has-error','has-success'); msg.style.display='none'; return; }
+      if (pw !== conf) { group.classList.add('has-error'); group.classList.remove('has-success'); msg.textContent='Passwords do not match'; msg.style.display='block'; }
+      else { group.classList.remove('has-error'); group.classList.add('has-success'); msg.style.display='none'; }
+    }
+  </script>
+</body>
+</html>

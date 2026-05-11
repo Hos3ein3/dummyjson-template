@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Components — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">UI Components</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Alerts, toasts, loaders, modals, tabs, accordions, progress & more</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Alerts -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Alerts</h3>
+            <div class="space-y-3">
+              <div class="alert alert-info"><span>ℹ️</span><span>This is an informational alert message.</span><button class="alert-close" onclick="this.closest('.alert').remove()">✕</button></div>
+              <div class="alert alert-success"><span>✅</span><span>Operation completed successfully!</span><button class="alert-close" onclick="this.closest('.alert').remove()">✕</button></div>
+              <div class="alert alert-warning"><span>⚠️</span><span>Warning: This action cannot be undone.</span><button class="alert-close" onclick="this.closest('.alert').remove()">✕</button></div>
+              <div class="alert alert-error"><span>❌</span><span>Error: Something went wrong. Please try again.</span><button class="alert-close" onclick="this.closest('.alert').remove()">✕</button></div>
+            </div>
+          </div>
+
+          <!-- Toasts -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Toast Notifications</h3>
+            <p class="text-sm mb-4" style="color:var(--color-text-muted)">Click buttons to trigger toasts with progress bars</p>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-primary rounded-lg btn-sm" onclick="dashToast('✅ Item saved successfully!','success')">Success</button>
+              <button class="btn-danger btn-sm" onclick="dashToast('❌ Failed to delete item','error',4000)">Error</button>
+              <button class="btn-secondary btn-sm" onclick="dashToast('ℹ️ New update available','success',5000)">Info</button>
+              <button class="btn-ghost btn-sm" onclick="dashToast('⚠️ Session expires in 5 minutes','error',6000)">Warning</button>
+            </div>
+          </div>
+
+          <!-- Loaders -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Loaders</h3>
+            <div class="space-y-4">
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">FULL PAGE LOADER</p>
+                <button class="btn-primary rounded-lg btn-sm" onclick="showFullLoader('Loading data...');setTimeout(()=>{hideFullLoader();dashToast('Loaded!','success')},2000)">Show Full Loader (2s)</button>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">PARTIAL LOADER</p>
+                <div id="partial-demo" class="p-4 rounded-lg" style="background:var(--glass-bg);min-height:60px;display:flex;align-items:center;justify-content:center">
+                  <span class="text-sm" style="color:var(--color-text-muted)">Content loaded</span>
+                </div>
+                <button class="btn-secondary btn-sm mt-2" onclick="showPartialLoader('partial-demo');setTimeout(()=>{document.getElementById('partial-demo').innerHTML='<span class=\'text-sm\' style=\'color:var(--color-text-muted)\'>Content loaded</span>';dashToast('Section loaded','success')},1500)">Reload Section</button>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">INLINE SPINNER</p>
+                <div class="flex items-center gap-3">
+                  <div class="spinner" style="width:24px;height:24px;border-width:2px"></div>
+                  <div class="spinner" style="width:32px;height:32px"></div>
+                  <div class="spinner" style="width:40px;height:40px"></div>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">SKELETON LOADING</p>
+                <div class="flex items-center gap-3">
+                  <div class="skeleton" style="width:48px;height:48px;border-radius:50%"></div>
+                  <div class="flex-1"><div class="skeleton mb-2" style="height:12px;width:60%"></div><div class="skeleton" style="height:10px;width:40%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modals -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Modals</h3>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-primary rounded-lg btn-sm" onclick="openModal('modal-sm')">Small Modal</button>
+              <button class="btn-secondary btn-sm" onclick="openModal('modal-md')">Medium Modal</button>
+              <button class="btn-glass btn-sm" onclick="openModal('modal-lg')">Large Modal</button>
+              <button class="btn-danger btn-sm" onclick="openModal('modal-confirm')">Confirm Dialog</button>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Tabs</h3>
+            <div id="tabs-demo">
+              <div class="tabs">
+                <button class="tab-btn active" data-tab="tab-1" onclick="switchTab('tabs-demo','tab-1')">Overview</button>
+                <button class="tab-btn" data-tab="tab-2" onclick="switchTab('tabs-demo','tab-2')">Details</button>
+                <button class="tab-btn" data-tab="tab-3" onclick="switchTab('tabs-demo','tab-3')">Settings</button>
+              </div>
+              <div class="tab-panel active" id="tab-1">
+                <p class="text-sm" style="color:var(--color-text-secondary)">This is the Overview tab. Tabs let you organize content into separate views that users can switch between.</p>
+              </div>
+              <div class="tab-panel" id="tab-2">
+                <p class="text-sm" style="color:var(--color-text-secondary)">Details panel. Each tab panel can contain any content — forms, tables, charts, or other components.</p>
+              </div>
+              <div class="tab-panel" id="tab-3">
+                <p class="text-sm" style="color:var(--color-text-secondary)">Settings panel. Configure your preferences here.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Accordion</h3>
+            <div class="accordion-item open">
+              <div class="accordion-header" onclick="toggleAccordion(this)"><span>What is DummyJSON?</span><span class="acc-icon">▼</span></div>
+              <div class="accordion-body"><p class="text-sm pt-2" style="color:var(--color-text-secondary)">DummyJSON is a free REST API that provides realistic placeholder data for development and testing.</p></div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)"><span>How do I use it?</span><span class="acc-icon">▼</span></div>
+              <div class="accordion-body"><p class="text-sm pt-2" style="color:var(--color-text-secondary)">Simply make HTTP requests to the API endpoints. No authentication required for most operations.</p></div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)"><span>Is it free?</span><span class="acc-icon">▼</span></div>
+              <div class="accordion-body"><p class="text-sm pt-2" style="color:var(--color-text-secondary)">Yes! DummyJSON is completely free and open source.</p></div>
+            </div>
+          </div>
+
+          <!-- Progress Bars -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Progress Bars</h3>
+            <div class="space-y-4">
+              <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--color-text-muted)">Loading...</span><span style="color:var(--color-text)">25%</span></div><div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--color-text-muted)">Uploading</span><span style="color:var(--color-text)">60%</span></div><div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--color-accent)"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--color-text-muted)">Complete</span><span style="color:var(--color-text)">100%</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--success)"></div></div></div>
+            </div>
+            <div class="flex items-center gap-6 mt-6 justify-center">
+              <div class="progress-circular" style="width:70px;height:70px">
+                <svg width="70" height="70"><circle cx="35" cy="35" r="30" stroke="var(--glass-bg)" stroke-width="5" fill="none"/><circle cx="35" cy="35" r="30" stroke="var(--btn-bg)" stroke-width="5" fill="none" stroke-dasharray="188" stroke-dashoffset="47" stroke-linecap="round"/></svg>
+                <span class="progress-text">75%</span>
+              </div>
+              <div class="progress-circular" style="width:70px;height:70px">
+                <svg width="70" height="70"><circle cx="35" cy="35" r="30" stroke="var(--glass-bg)" stroke-width="5" fill="none"/><circle cx="35" cy="35" r="30" stroke="var(--success)" stroke-width="5" fill="none" stroke-dasharray="188" stroke-dashoffset="0" stroke-linecap="round"/></svg>
+                <span class="progress-text">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Badges & Tooltips -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Badges, Chips & Tooltips</h3>
+            <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">BADGES</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="badge">Default</span>
+              <span class="badge" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.25);color:var(--success)">Success</span>
+              <span class="badge" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.25);color:var(--star)">Warning</span>
+              <span class="badge badge-discount">Error</span>
+              <span class="badge" style="background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.25);color:#8B5CF6">Purple</span>
+            </div>
+            <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">REMOVABLE CHIPS</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="tag-chip">Angular <span class="tag-remove" onclick="this.parentElement.remove()">×</span></span>
+              <span class="tag-chip">TypeScript <span class="tag-remove" onclick="this.parentElement.remove()">×</span></span>
+              <span class="tag-chip">RxJS <span class="tag-remove" onclick="this.parentElement.remove()">×</span></span>
+            </div>
+            <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">TOOLTIPS (hover)</p>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-secondary btn-sm" data-tooltip="I'm a tooltip!">Hover me</button>
+              <button class="btn-primary rounded-lg btn-sm" data-tooltip="Save changes">Save</button>
+              <button class="btn-danger btn-sm" data-tooltip="This will delete permanently">Delete</button>
+            </div>
+          </div>
+
+          <!-- Breadcrumb showcase -->
+          <div class="dash-card lg:col-span-2">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Breadcrumb Styles</h3>
+            <div class="space-y-4">
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">SLASH SEPARATOR</p>
+                <div class="breadcrumb">
+                  <a href="#">Dashboard</a><span class="sep">/</span><a href="#">Forms</a><span class="sep">/</span><span class="current">Advanced</span>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">ARROW SEPARATOR</p>
+                <div class="breadcrumb">
+                  <a href="#">Home</a><span class="sep">›</span><a href="#">Products</a><span class="sep">›</span><a href="#">Electronics</a><span class="sep">›</span><span class="current">Laptops</span>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">WITH ICONS</p>
+                <div class="breadcrumb">
+                  <a href="#" class="flex items-center gap-1">🏠 Home</a><span class="sep">/</span><a href="#" class="flex items-center gap-1">📦 Products</a><span class="sep">/</span><span class="current flex items-center gap-1">📱 iPhone 15</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal-overlay" id="modal-sm" onclick="if(event.target===this)closeModal('modal-sm')">
+    <div class="modal-box modal-sm">
+      <div class="modal-header"><h3 class="font-semibold" style="color:var(--color-text);font-family:'Outfit'">Small Modal</h3><button onclick="closeModal('modal-sm')" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer">✕</button></div>
+      <div class="modal-body"><p class="text-sm" style="color:var(--color-text-secondary)">This is a small modal with glass effect.</p></div>
+      <div class="modal-footer"><button class="btn-secondary btn-sm" onclick="closeModal('modal-sm')">Close</button><button class="btn-primary rounded-lg btn-sm" onclick="closeModal('modal-sm');dashToast('Saved!','success')">Save</button></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-md" onclick="if(event.target===this)closeModal('modal-md')">
+    <div class="modal-box modal-md">
+      <div class="modal-header"><h3 class="font-semibold" style="color:var(--color-text);font-family:'Outfit'">Medium Modal</h3><button onclick="closeModal('modal-md')" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer">✕</button></div>
+      <div class="modal-body">
+        <p class="text-sm mb-4" style="color:var(--color-text-secondary)">This modal can contain forms, images, or any content.</p>
+        <div class="input-group"><label class="input-label">Name</label><input class="glass-input" placeholder="Enter name"></div>
+        <div class="input-group"><label class="input-label">Email</label><input class="glass-input" placeholder="Enter email"></div>
+      </div>
+      <div class="modal-footer"><button class="btn-ghost" onclick="closeModal('modal-md')">Cancel</button><button class="btn-primary rounded-lg" onclick="closeModal('modal-md');dashToast('Updated!','success')">Update</button></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-lg" onclick="if(event.target===this)closeModal('modal-lg')">
+    <div class="modal-box modal-lg">
+      <div class="modal-header"><h3 class="font-semibold" style="color:var(--color-text);font-family:'Outfit'">Large Modal</h3><button onclick="closeModal('modal-lg')" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer">✕</button></div>
+      <div class="modal-body"><p class="text-sm" style="color:var(--color-text-secondary)">Large modals are perfect for detailed content, data tables, or multi-section forms. They provide ample space for complex interactions while maintaining the glass design aesthetic.</p></div>
+      <div class="modal-footer"><button class="btn-secondary" onclick="closeModal('modal-lg')">Close</button></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-confirm" onclick="if(event.target===this)closeModal('modal-confirm')">
+    <div class="modal-box modal-sm">
+      <div class="modal-body text-center py-6">
+        <div class="text-4xl mb-3">⚠️</div>
+        <h3 class="text-lg font-bold mb-2" style="color:var(--color-text);font-family:'Outfit'">Are you sure?</h3>
+        <p class="text-sm mb-5" style="color:var(--color-text-muted)">This action cannot be undone. All data will be permanently deleted.</p>
+        <div class="flex gap-3 justify-center">
+          <button class="btn-secondary" onclick="closeModal('modal-confirm')">Cancel</button>
+          <button class="btn-danger" onclick="closeModal('modal-confirm');dashToast('Item deleted','error')">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Visuals'},{label:'UI Components'}]));</script>
+</body>
+</html>

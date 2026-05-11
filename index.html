@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DummyStore — Home</title>
+  <meta name="description" content="Explore products, recipes, and posts with DummyStore — a modern storefront powered by DummyJSON API.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], heading: ['Outfit','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- BG Elements -->
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Navbar -->
+  <div id="navbar-container"></div>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="relative py-20 md:py-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 badge mb-6 fade-in">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--success)"></span>
+          Powered by DummyJSON API
+        </div>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 fade-in" style="font-family:'Outfit',sans-serif; color: var(--color-text);">
+          Discover, Cook &<br>
+          <span class="text-gradient">Share Stories</span>
+        </h1>
+        <p class="text-lg md:text-xl mb-8 leading-relaxed fade-in" style="color: var(--color-text-muted);">
+          Browse thousands of products, explore delicious recipes, and read engaging posts — all in one beautifully crafted storefront.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center fade-in">
+          <a href="products.html" class="btn-primary px-8 py-3 text-base rounded-2xl">
+            Browse Products ${icons.arrow}
+          </a>
+          <a href="recipes.html" class="btn-glass px-8 py-3 text-base rounded-2xl">
+            Explore Recipes
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Decorative hero glass panels -->
+    <div class="absolute -top-10 -left-20 w-72 h-72 rounded-3xl glass opacity-30 rotate-12 hidden lg:block"></div>
+    <div class="absolute -bottom-10 -right-16 w-64 h-64 rounded-3xl glass opacity-20 -rotate-6 hidden lg:block"></div>
+  </section>
+
+  <!-- ═══════════════ STATS BAR ═══════════════ -->
+  <section class="py-8 fade-in">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="glass-card rounded-2xl p-6 md:p-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center" id="stats-bar">
+          <div>
+            <div class="text-3xl md:text-4xl font-extrabold mb-1" style="font-family:'Outfit',sans-serif; color: var(--color-text);" id="stat-products">—</div>
+            <div class="text-sm font-medium" style="color: var(--color-text-muted);">Products</div>
+          </div>
+          <div>
+            <div class="text-3xl md:text-4xl font-extrabold mb-1" style="font-family:'Outfit',sans-serif; color: var(--color-text);" id="stat-recipes">—</div>
+            <div class="text-sm font-medium" style="color: var(--color-text-muted);">Recipes</div>
+          </div>
+          <div>
+            <div class="text-3xl md:text-4xl font-extrabold mb-1" style="font-family:'Outfit',sans-serif; color: var(--color-text);" id="stat-posts">—</div>
+            <div class="text-sm font-medium" style="color: var(--color-text-muted);">Posts</div>
+          </div>
+          <div>
+            <div class="text-3xl md:text-4xl font-extrabold mb-1" style="font-family:'Outfit',sans-serif; color: var(--color-text);" id="stat-quotes">—</div>
+            <div class="text-sm font-medium" style="color: var(--color-text-muted);">Quotes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FEATURED PRODUCTS ═══════════════ -->
+  <section class="py-16 fade-in">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Featured Products</h2>
+          <p class="mt-2 text-sm" style="color: var(--color-text-muted);">Handpicked for you</p>
+        </div>
+        <a href="products.html" class="btn-glass px-5 py-2 rounded-xl text-sm hidden sm:inline-flex">
+          View All ${icons.arrow}
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="featured-products">
+        <!-- Skeleton loaders -->
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+      </div>
+      <div class="text-center mt-6 sm:hidden">
+        <a href="products.html" class="btn-glass px-6 py-2.5 rounded-xl text-sm">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ RECIPE HIGHLIGHTS ═══════════════ -->
+  <section class="py-16 fade-in">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Recipe Highlights</h2>
+          <p class="mt-2 text-sm" style="color: var(--color-text-muted);">Delicious meals to try</p>
+        </div>
+        <a href="recipes.html" class="btn-glass px-5 py-2 rounded-xl text-sm hidden sm:inline-flex">
+          View All ${icons.arrow}
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="featured-recipes">
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+        <div class="glass-card rounded-2xl p-4"><div class="skeleton h-48 mb-4"></div><div class="skeleton h-4 w-3/4 mb-2"></div><div class="skeleton h-4 w-1/2"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ DAILY QUOTE ═══════════════ -->
+  <section class="py-16 fade-in">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="glass-card rounded-3xl p-8 md:p-12 text-center relative overflow-hidden" id="quote-card">
+        <div class="absolute top-4 left-6 opacity-20">${icons.quote}</div>
+        <div class="skeleton h-6 w-3/4 mx-auto mb-4"></div>
+        <div class="skeleton h-4 w-1/3 mx-auto"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ RECENT POSTS ═══════════════ -->
+  <section class="py-16 fade-in">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Recent Posts</h2>
+          <p class="mt-2 text-sm" style="color: var(--color-text-muted);">What people are talking about</p>
+        </div>
+        <a href="posts.html" class="btn-glass px-5 py-2 rounded-xl text-sm hidden sm:inline-flex">
+          View All ${icons.arrow}
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="recent-posts">
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CTA ═══════════════ -->
+  <section class="py-20 fade-in">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="glass-card rounded-3xl p-10 md:p-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Ready to get started?</h2>
+        <p class="mb-8 text-base" style="color: var(--color-text-muted);">Create an account and start exploring all the features DummyStore has to offer.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="signup.html" class="btn-primary px-8 py-3 text-base rounded-2xl">Create Account</a>
+          <a href="login.html" class="btn-glass px-8 py-3 text-base rounded-2xl">Login</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wizard Form — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Wizard Form</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Multi-step form with validation & progress tracking</p>
+
+        <div class="dash-card" style="max-width:700px;margin:0 auto">
+          <div id="wizard-container"></div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="wizard-success-modal" onclick="if(event.target===this)closeModal('wizard-success-modal')">
+          <div class="modal-box modal-sm">
+            <div class="modal-body text-center py-8">
+              <div class="text-5xl mb-4">🎉</div>
+              <h3 class="text-xl font-bold mb-2" style="font-family:'Outfit';color:var(--color-text)">Success!</h3>
+              <p class="text-sm mb-6" style="color:var(--color-text-muted)">Your account has been created successfully.</p>
+              <button class="btn-primary rounded-xl" onclick="closeModal('wizard-success-modal');wizard.current=0;wizard.render()">Start Over</button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script src="js/forms.js"></script>
+  <script>
+    let wizard;
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard([{label:'Forms'},{label:'Wizard Form'}]);
+
+      wizard = new WizardForm('wizard-container', [
+        {
+          title: 'Personal Info',
+          content: `
+            <h3 class="text-lg font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Personal Information</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="input-group"><label class="input-label">First Name <span class="required">*</span></label><input name="firstName" class="glass-input" placeholder="John" required></div>
+              <div class="input-group"><label class="input-label">Last Name <span class="required">*</span></label><input name="lastName" class="glass-input" placeholder="Doe" required></div>
+            </div>
+            <div class="input-group"><label class="input-label">Email <span class="required">*</span></label><input name="email" type="email" class="glass-input" placeholder="john@example.com" required></div>
+            <div class="input-group"><label class="input-label">Phone</label><input name="phone" class="glass-input" placeholder="+1 (555) 000-0000"></div>
+          `
+        },
+        {
+          title: 'Account Setup',
+          content: `
+            <h3 class="text-lg font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Account Setup</h3>
+            <div class="input-group"><label class="input-label">Username <span class="required">*</span></label><input name="username" class="glass-input" placeholder="johndoe" required></div>
+            <div class="input-group"><label class="input-label">Password <span class="required">*</span></label><input name="password" type="password" class="glass-input" placeholder="Min 6 characters" required></div>
+            <div class="input-group"><label class="input-label">Role</label>
+              <select name="role" class="glass-input"><option value="">Select role</option><option>Admin</option><option>Editor</option><option>Viewer</option></select>
+            </div>
+            <div class="flex items-center gap-3 mt-2"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label><span class="text-sm" style="color:var(--color-text-secondary)">Receive email notifications</span></div>
+          `
+        },
+        {
+          title: 'Confirmation',
+          content: `
+            <h3 class="text-lg font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Review & Confirm</h3>
+            <div class="alert alert-info mb-4"><span>ℹ️</span><span>Please review your information before submitting.</span></div>
+            <div class="space-y-3">
+              <div class="flex justify-between p-3 rounded-lg" style="background:var(--glass-bg)">
+                <span class="text-sm" style="color:var(--color-text-muted)">Name</span>
+                <span class="text-sm font-medium" style="color:var(--color-text)" id="review-name">—</span>
+              </div>
+              <div class="flex justify-between p-3 rounded-lg" style="background:var(--glass-bg)">
+                <span class="text-sm" style="color:var(--color-text-muted)">Email</span>
+                <span class="text-sm font-medium" style="color:var(--color-text)" id="review-email">—</span>
+              </div>
+              <div class="flex justify-between p-3 rounded-lg" style="background:var(--glass-bg)">
+                <span class="text-sm" style="color:var(--color-text-muted)">Username</span>
+                <span class="text-sm font-medium" style="color:var(--color-text)" id="review-user">—</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4"><input type="checkbox" required class="w-4 h-4" style="accent-color:var(--btn-bg)"><span class="text-sm" style="color:var(--color-text-secondary)">I agree to the Terms & Privacy Policy</span></div>
+          `
+        },
+      ]);
+      wizard.render();
+
+      // Override next to populate review
+      const origNext = wizard.next.bind(wizard);
+      wizard.next = function() {
+        origNext();
+        if (this.current === 2) {
+          document.getElementById('review-name').textContent = (this.data.firstName||'') + ' ' + (this.data.lastName||'');
+          document.getElementById('review-email').textContent = this.data.email || '—';
+          document.getElementById('review-user').textContent = this.data.username || '—';
+        }
+      };
+    });
+  </script>
+</body>
+</html>

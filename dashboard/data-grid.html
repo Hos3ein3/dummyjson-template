@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Grid — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Data Grid</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Sortable, searchable, paginated data table with selection</p>
+
+        <!-- Products Grid -->
+        <div class="mb-8">
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Products</h3>
+          <div id="products-grid"><div class="partial-loader"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Users Grid -->
+        <div>
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Users</h3>
+          <div id="users-grid"><div class="partial-loader"><div class="spinner"></div></div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script src="js/grid.js"></script>
+  <script>
+    let grid, userGrid;
+    document.addEventListener('DOMContentLoaded', async () => {
+      initDashboard([{label:'Data'},{label:'Data Grid'}]);
+
+      // Products grid
+      grid = new DataGrid('products-grid', {
+        perPage: 8,
+        defaultSort: 'title',
+        columns: [
+          { key: 'id', label: 'ID' },
+          { key: 'thumbnail', label: 'Image', render: (v) => `<img src="${v}" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)">` },
+          { key: 'title', label: 'Title', render: (v) => `<span class="font-medium" style="color:var(--color-text)">${v}</span>` },
+          { key: 'category', label: 'Category', render: (v) => `<span class="badge text-xs">${v}</span>` },
+          { key: 'price', label: 'Price', render: (v) => `$${v.toFixed(2)}` },
+          { key: 'rating', label: 'Rating', render: (v) => `⭐ ${v.toFixed(1)}` },
+          { key: 'stock', label: 'Stock', render: (v) => `<span style="color:${v>10?'var(--success)':'var(--error)'}">${v}</span>` },
+        ]
+      });
+
+      try {
+        const data = await api.getProducts(100, 0);
+        grid.setData(data.products);
+      } catch(e) { document.getElementById('products-grid').innerHTML = '<p style="color:var(--color-text-muted)">Failed to load</p>'; }
+
+      // Users grid
+      userGrid = new DataGrid('users-grid', {
+        perPage: 6,
+        columns: [
+          { key: 'id', label: 'ID' },
+          { key: 'image', label: 'Avatar', render: (v) => `<img src="${v}" alt="" class="w-8 h-8 rounded-full object-cover">` },
+          { key: 'firstName', label: 'First Name', render: (v) => `<span class="font-medium" style="color:var(--color-text)">${v}</span>` },
+          { key: 'lastName', label: 'Last Name' },
+          { key: 'email', label: 'Email' },
+          { key: 'age', label: 'Age' },
+          { key: 'role', label: 'Role', render: (v) => `<span class="badge text-xs">${v||'user'}</span>` },
+        ]
+      });
+
+      try {
+        const uData = await api.get('/users?limit=50');
+        userGrid.setData(uData.users);
+      } catch(e) { document.getElementById('users-grid').innerHTML = '<p style="color:var(--color-text-muted)">Failed to load</p>'; }
+    });
+  </script>
+</body>
+</html>

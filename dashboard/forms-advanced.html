@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Inputs — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Advanced Inputs</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Date pickers, file uploads, multi-select, tags, buttons & more</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Date Picker -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Date Picker</h3>
+            <div class="input-group">
+              <label class="input-label">Select Date</label>
+              <div class="datepicker-wrap">
+                <input type="text" id="datepicker-1" class="glass-input" placeholder="Click to pick a date" readonly>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Date Range</label>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="datepicker-wrap">
+                  <input type="text" id="datepicker-start" class="glass-input" placeholder="Start date" readonly>
+                </div>
+                <div class="datepicker-wrap">
+                  <input type="text" id="datepicker-end" class="glass-input" placeholder="End date" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Time Picker -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Time Picker</h3>
+            <div class="input-group">
+              <label class="input-label">Select Time</label>
+              <div class="grid grid-cols-3 gap-2">
+                <select class="glass-input text-center" id="tp-hour">
+                  ${Array.from({length:12},(_,i)=>`<option>${String(i+1).padStart(2,'0')}</option>`).join('')}
+                </select>
+                <select class="glass-input text-center" id="tp-min">
+                  ${Array.from({length:60},(_,i)=>`<option>${String(i).padStart(2,'0')}</option>`).join('')}
+                </select>
+                <select class="glass-input text-center" id="tp-ampm">
+                  <option>AM</option><option>PM</option>
+                </select>
+              </div>
+              <div class="input-helper">Hour : Minute : AM/PM</div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Quick Time Select</label>
+              <div class="flex flex-wrap gap-2">
+                <button class="chip" onclick="this.classList.toggle('active')">09:00</button>
+                <button class="chip" onclick="this.classList.toggle('active')">10:00</button>
+                <button class="chip" onclick="this.classList.toggle('active')">11:00</button>
+                <button class="chip" onclick="this.classList.toggle('active')">13:00</button>
+                <button class="chip" onclick="this.classList.toggle('active')">14:00</button>
+                <button class="chip" onclick="this.classList.toggle('active')">15:00</button>
+                <button class="chip" onclick="this.classList.toggle('active')">16:00</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- File Upload -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">File Upload</h3>
+            <div class="input-group">
+              <label class="input-label">Drag & Drop Zone</label>
+              <div id="file-drop-1" class="file-drop" onclick="document.getElementById('file-input-1').click()">
+                <div class="mb-2 text-3xl">📁</div>
+                <p class="text-sm font-medium" style="color:var(--color-text)">Drop files here or click to browse</p>
+                <p class="text-xs mt-1" style="color:var(--color-text-muted)">PNG, JPG, PDF up to 10MB</p>
+                <input type="file" id="file-input-1" class="hidden" multiple onchange="handleFiles('file-drop-1', this.files)">
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Simple File Input</label>
+              <input type="file" class="glass-input" style="padding:0.5rem">
+            </div>
+          </div>
+
+          <!-- Multi Select -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Multi Select</h3>
+            <div class="input-group">
+              <label class="input-label">Choose Categories</label>
+              <div id="multi-1" class="multiselect" onclick="toggleMultiSelect('multi-1')">
+                <div class="glass-input" style="min-height:44px;cursor:pointer">
+                  <div class="multiselect-display"><span style="color:var(--color-text-muted);font-size:0.85rem">Select options...</span></div>
+                </div>
+                <div class="multiselect-dropdown" onclick="event.stopPropagation()">
+                  <div class="multiselect-option" data-value="electronics" data-label="Electronics" onclick="toggleMultiOption('multi-1')">☐ Electronics</div>
+                  <div class="multiselect-option" data-value="clothing" data-label="Clothing" onclick="toggleMultiOption('multi-1')">☐ Clothing</div>
+                  <div class="multiselect-option" data-value="furniture" data-label="Furniture" onclick="toggleMultiOption('multi-1')">☐ Furniture</div>
+                  <div class="multiselect-option" data-value="groceries" data-label="Groceries" onclick="toggleMultiOption('multi-1')">☐ Groceries</div>
+                  <div class="multiselect-option" data-value="beauty" data-label="Beauty" onclick="toggleMultiOption('multi-1')">☐ Beauty</div>
+                  <div class="multiselect-option" data-value="sports" data-label="Sports" onclick="toggleMultiOption('multi-1')">☐ Sports</div>
+                </div>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Searchable Select</label>
+              <div class="search-select" id="searchable-1">
+                <input type="text" class="glass-input" placeholder="Type to search..." onfocus="document.getElementById('searchable-1').classList.add('open')" oninput="filterSearchSelect(this.value)" onblur="setTimeout(()=>document.getElementById('searchable-1').classList.remove('open'),200)">
+                <div class="search-select-dropdown" id="search-options">
+                  <div class="multiselect-option" onclick="selectSearchOption(this,'searchable-1')">JavaScript</div>
+                  <div class="multiselect-option" onclick="selectSearchOption(this,'searchable-1')">TypeScript</div>
+                  <div class="multiselect-option" onclick="selectSearchOption(this,'searchable-1')">Angular</div>
+                  <div class="multiselect-option" onclick="selectSearchOption(this,'searchable-1')">React</div>
+                  <div class="multiselect-option" onclick="selectSearchOption(this,'searchable-1')">Vue</div>
+                  <div class="multiselect-option" onclick="selectSearchOption(this,'searchable-1')">Python</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tags Input & OTP -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Tags Input & OTP</h3>
+            <div class="input-group">
+              <label class="input-label">Tags (type & press Enter)</label>
+              <div class="tags-input-wrap" id="tags-1"><input type="text" placeholder="Add tag..."></div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">OTP / PIN Input</label>
+              <div class="otp-group" id="otp-1">
+                <input type="text" class="glass-input otp-input" maxlength="1">
+                <input type="text" class="glass-input otp-input" maxlength="1">
+                <input type="text" class="glass-input otp-input" maxlength="1">
+                <input type="text" class="glass-input otp-input" maxlength="1">
+                <input type="text" class="glass-input otp-input" maxlength="1">
+                <input type="text" class="glass-input otp-input" maxlength="1">
+              </div>
+              <div class="input-helper">Enter the 6-digit code</div>
+            </div>
+          </div>
+
+          <!-- Advanced Textarea -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Advanced Textarea</h3>
+            <div class="input-group">
+              <label class="input-label">With Toolbar & Counter</label>
+              <div class="rounded-xl overflow-hidden" style="border:1px solid var(--input-border)">
+                <div class="flex items-center gap-1 px-3 py-1.5" style="background:var(--glass-bg);border-bottom:1px solid var(--glass-border)">
+                  <button class="btn-ghost btn-sm px-2 py-1 rounded" onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
+                  <button class="btn-ghost btn-sm px-2 py-1 rounded" onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
+                  <button class="btn-ghost btn-sm px-2 py-1 rounded" onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+                  <span style="width:1px;height:16px;background:var(--glass-border)" class="mx-1"></span>
+                  <button class="btn-ghost btn-sm px-2 py-1 rounded" title="List">☰</button>
+                  <button class="btn-ghost btn-sm px-2 py-1 rounded" title="Link">🔗</button>
+                </div>
+                <textarea id="adv-textarea" class="w-full p-3 text-sm outline-none" style="background:var(--input-bg);color:var(--color-text);border:none;min-height:100px;resize:vertical" placeholder="Write something amazing..." oninput="document.getElementById('char-count').textContent=this.value.length+'/500'"></textarea>
+                <div class="flex items-center justify-between px-3 py-1.5" style="background:var(--glass-bg);border-top:1px solid var(--glass-border)">
+                  <span class="text-xs" style="color:var(--color-text-muted)">Supports basic formatting</span>
+                  <span id="char-count" class="text-xs" style="color:var(--color-text-muted)">0/500</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Range Slider & Color -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Range & Color</h3>
+            <div class="input-group">
+              <label class="input-label">Range Slider</label>
+              <div class="flex items-center gap-3">
+                <span class="text-xs" style="color:var(--color-text-muted)">0</span>
+                <input type="range" min="0" max="100" value="50" class="flex-1" style="accent-color:var(--btn-bg)" oninput="document.getElementById('range-val').textContent=this.value">
+                <span class="text-xs font-bold" style="color:var(--color-text)" id="range-val">50</span>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Price Range</label>
+              <div class="flex items-center gap-3">
+                <input type="number" class="glass-input" style="width:80px" placeholder="Min" value="0">
+                <span style="color:var(--color-text-muted)">—</span>
+                <input type="number" class="glass-input" style="width:80px" placeholder="Max" value="1000">
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Color Picker</label>
+              <div class="flex items-center gap-3">
+                <input type="color" id="color-pick" value="#56B6C6" class="w-10 h-10 rounded-lg cursor-pointer" style="border:1px solid var(--glass-border)" oninput="document.getElementById('color-hex').value=this.value">
+                <input type="text" id="color-hex" class="glass-input" value="#56B6C6" style="max-width:120px" oninput="document.getElementById('color-pick').value=this.value">
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons Showcase -->
+          <div class="dash-card lg:col-span-2">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Buttons</h3>
+            <div class="space-y-5">
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">VARIANTS</p>
+                <div class="flex flex-wrap gap-3">
+                  <button class="btn-primary rounded-xl">Primary</button>
+                  <button class="btn-secondary">Secondary</button>
+                  <button class="btn-danger">Danger</button>
+                  <button class="btn-ghost">Ghost</button>
+                  <button class="btn-glass">Glass</button>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">SIZES</p>
+                <div class="flex flex-wrap items-center gap-3">
+                  <button class="btn-primary rounded-xl btn-sm">Small</button>
+                  <button class="btn-primary rounded-xl">Default</button>
+                  <button class="btn-primary rounded-xl btn-lg">Large</button>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">WITH ICONS</p>
+                <div class="flex flex-wrap gap-3">
+                  <button class="btn-primary rounded-xl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Item</button>
+                  <button class="btn-secondary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+                  <button class="btn-danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg> Delete</button>
+                  <button class="btn-ghost"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit</button>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">ICON-ONLY BUTTONS</p>
+                <div class="flex flex-wrap gap-2">
+                  <button class="btn-primary rounded-lg" style="width:40px;height:40px;padding:0" data-tooltip="Add"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  <button class="btn-secondary" style="width:40px;height:40px;padding:0" data-tooltip="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+                  <button class="btn-danger" style="width:40px;height:40px;padding:0" data-tooltip="Delete"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
+                  <button class="btn-ghost" style="width:40px;height:40px;padding:0" data-tooltip="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">BUTTON WITH DROPDOWN</p>
+                <div class="flex flex-wrap gap-3">
+                  <div class="btn-dropdown" id="btn-dd-1">
+                    <div class="btn-group">
+                      <button class="btn-primary rounded-none" onclick="dashToast('Action clicked','success')">Save</button>
+                      <button class="btn-primary rounded-none" style="padding:0.6rem 0.5rem;border-left:1px solid rgba(255,255,255,0.2)" onclick="document.getElementById('btn-dd-1').classList.toggle('open')">▾</button>
+                    </div>
+                    <div class="btn-dropdown-menu">
+                      <div class="btn-dropdown-item" onclick="dashToast('Save as Draft','success')">📝 Save as Draft</div>
+                      <div class="btn-dropdown-item" onclick="dashToast('Save & Publish','success')">🚀 Save & Publish</div>
+                      <div class="btn-dropdown-divider"></div>
+                      <div class="btn-dropdown-item" onclick="dashToast('Exported','success')">📤 Export</div>
+                    </div>
+                  </div>
+                  <div class="btn-dropdown" id="btn-dd-2">
+                    <button class="btn-secondary" onclick="document.getElementById('btn-dd-2').classList.toggle('open')">Options ▾</button>
+                    <div class="btn-dropdown-menu">
+                      <div class="btn-dropdown-item">✏️ Edit</div>
+                      <div class="btn-dropdown-item">📋 Duplicate</div>
+                      <div class="btn-dropdown-item">📁 Archive</div>
+                      <div class="btn-dropdown-divider"></div>
+                      <div class="btn-dropdown-item" style="color:var(--error)">🗑️ Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">BUTTON GROUP</p>
+                <div class="btn-group">
+                  <button class="btn-secondary">Left</button>
+                  <button class="btn-secondary" style="border-left:1px solid var(--glass-border)">Center</button>
+                  <button class="btn-secondary" style="border-left:1px solid var(--glass-border)">Right</button>
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">LOADING BUTTON</p>
+                <button class="btn-primary rounded-xl" id="loading-btn" onclick="this.innerHTML='<svg class=\'animate-spin\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\'><circle class=\'opacity-25\' cx=\'12\' cy=\'12\' r=\'10\' stroke=\'currentColor\' stroke-width=\'4\'></circle><path class=\'opacity-75\' fill=\'currentColor\' d=\'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z\'></path></svg> Loading...';this.disabled=true;setTimeout(()=>{this.innerHTML='Submit';this.disabled=false;dashToast('Done!','success')},2000)">Submit</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script src="js/forms.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard([{label:'Forms'},{label:'Advanced Inputs'}]);
+      // Init date pickers
+      datePickers['datepicker-1'] = new DatePicker('datepicker-1');
+      datePickers['datepicker-start'] = new DatePicker('datepicker-start');
+      datePickers['datepicker-end'] = new DatePicker('datepicker-end');
+      // Init tags & OTP
+      initTagsInput('tags-1');
+      initOtpInput('otp-1');
+      // Init file drop
+      initFileDrop('file-drop-1');
+      // Close dropdowns on outside click
+      document.addEventListener('click', (e) => {
+        document.querySelectorAll('.btn-dropdown.open').forEach(d => {
+          if (!d.contains(e.target)) d.classList.remove('open');
+        });
+      });
+    });
+    function filterSearchSelect(q) {
+      document.querySelectorAll('#search-options .multiselect-option').forEach(o => {
+        o.style.display = o.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+      });
+    }
+    function selectSearchOption(el, wrapId) {
+      document.querySelector(`#${wrapId} input`).value = el.textContent;
+      document.getElementById(wrapId).classList.remove('open');
+    }
+  </script>
+</body>
+</html>

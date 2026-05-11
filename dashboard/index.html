@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — DummyStore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="dash-card stat-card">
+            <div class="stat-icon" style="background:rgba(86,182,198,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" width="24" height="24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div><div class="text-2xl font-bold" style="font-family:'Outfit';color:var(--color-text)" id="s-users">—</div><div class="text-xs" style="color:var(--color-text-muted)">Total Users</div></div>
+          </div>
+          <div class="dash-card stat-card">
+            <div class="stat-icon" style="background:rgba(16,185,129,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" width="24" height="24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+            <div><div class="text-2xl font-bold" style="font-family:'Outfit';color:var(--color-text)" id="s-products">—</div><div class="text-xs" style="color:var(--color-text-muted)">Products</div></div>
+          </div>
+          <div class="dash-card stat-card">
+            <div class="stat-icon" style="background:rgba(245,158,11,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--star)" stroke-width="2" width="24" height="24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div>
+            <div><div class="text-2xl font-bold" style="font-family:'Outfit';color:var(--color-text)" id="s-carts">—</div><div class="text-xs" style="color:var(--color-text-muted)">Orders</div></div>
+          </div>
+          <div class="dash-card stat-card">
+            <div class="stat-icon" style="background:rgba(139,92,246,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" width="24" height="24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div><div class="text-2xl font-bold" style="font-family:'Outfit';color:var(--color-text)" id="s-revenue">—</div><div class="text-xs" style="color:var(--color-text-muted)">Revenue</div></div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+          <div class="lg:col-span-2 dash-card"><div style="height:300px"><canvas id="revenue-chart"></canvas></div></div>
+          <div class="dash-card"><div style="height:300px"><canvas id="category-chart"></canvas></div></div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Recent Orders -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Recent Orders</h3>
+            <div class="overflow-x-auto" id="recent-orders"><div class="partial-loader"><div class="spinner"></div></div></div>
+          </div>
+          <!-- Activity -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Activity Feed</h3>
+            <div class="space-y-3" id="activity-feed"><div class="partial-loader"><div class="spinner"></div></div></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script src="js/charts-init.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      initDashboard([{ label: 'Overview' }]);
+
+      // Load stats
+      try {
+        const [users, products, carts] = await Promise.all([
+          api.get('/users?limit=1'), api.get('/products?limit=1'), api.get('/carts?limit=1')
+        ]);
+        document.getElementById('s-users').textContent = users.total;
+        document.getElementById('s-products').textContent = products.total;
+        document.getElementById('s-carts').textContent = carts.total;
+        document.getElementById('s-revenue').textContent = '$' + (carts.total * 142).toLocaleString();
+      } catch(e) {}
+
+      // Revenue chart
+      createLineChart('revenue-chart',
+        ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        [{ label: 'Revenue', data: [12,19,14,22,18,25,28,24,30,26,33,38] },
+         { label: 'Orders', data: [8,12,10,15,13,18,20,17,22,19,24,28], fill: false }],
+        'Revenue & Orders'
+      );
+
+      // Category chart
+      createDoughnutChart('category-chart',
+        ['Electronics','Clothing','Furniture','Groceries','Beauty'],
+        [35, 25, 15, 15, 10], 'By Category', '194'
+      );
+
+      // Recent orders
+      try {
+        const cData = await api.get('/carts?limit=5');
+        let html = '<table class="data-grid"><thead><tr><th>ID</th><th>Products</th><th>Total</th><th>Status</th></tr></thead><tbody>';
+        const statuses = ['Completed','Processing','Shipped','Pending'];
+        const statusColors = ['var(--success)','var(--color-accent)','#8B5CF6','var(--star)'];
+        cData.carts.forEach((c,i) => {
+          html += `<tr><td>#${c.id}</td><td>${c.totalProducts} items</td><td>$${c.total.toFixed(2)}</td>
+          <td><span class="badge text-xs" style="color:${statusColors[i%4]}">${statuses[i%4]}</span></td></tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('recent-orders').innerHTML = html;
+      } catch(e) { document.getElementById('recent-orders').innerHTML = '<p style="color:var(--color-text-muted)">Failed to load</p>'; }
+
+      // Activity feed
+      try {
+        const posts = await api.get('/posts?limit=5');
+        document.getElementById('activity-feed').innerHTML = posts.posts.map(p => `
+          <div class="flex items-start gap-3 p-2 rounded-lg" style="background:var(--glass-bg)">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--btn-bg);color:var(--btn-text);font-size:0.7rem;font-weight:700">U${p.userId}</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium line-clamp-1" style="color:var(--color-text)">${p.title}</p>
+              <p class="text-xs" style="color:var(--color-text-muted)">👍 ${p.reactions?.likes||0} · 👁 ${p.views||0}</p>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {}
+    });
+  </script>
+</body>
+</html>

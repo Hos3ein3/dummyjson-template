@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Posts — DummyStore</title>
+  <meta name="description" content="Read and explore posts from the community. Search and filter by tags.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], heading: ['Outfit','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div id="navbar-container"></div>
+
+  <!-- Header -->
+  <section class="pt-8 pb-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2 fade-in" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Posts</h1>
+      <p class="text-sm fade-in" style="color: var(--color-text-muted);">
+        Showing <span id="results-count">—</span> posts
+      </p>
+    </div>
+  </section>
+
+  <!-- Search & Tags -->
+  <section class="py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-card rounded-2xl p-4 md:p-6 fade-in">
+        <div class="relative mb-4">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2" style="color:var(--color-text-muted)">${icons.search}</span>
+          <input type="text" id="search-input" placeholder="Search posts..." class="glass-input pl-10" onkeyup="handlePostSearch(event)">
+        </div>
+        <div class="flex flex-wrap gap-2 max-h-20 overflow-y-auto" id="post-tags">
+          <span class="chip active text-xs" onclick="filterByPostTag('')">All</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Posts Grid -->
+  <section class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+        <div class="glass-card rounded-2xl p-6"><div class="skeleton h-4 w-3/4 mb-3"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-full mb-2"></div><div class="skeleton h-3 w-2/3"></div></div>
+      </div>
+      <div id="pagination-container"></div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/posts.js"></script>
+</body>
+</html>

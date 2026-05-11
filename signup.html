@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — DummyStore</title>
+  <meta name="description" content="Create a new DummyStore account.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], heading: ['Outfit','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div id="navbar-container"></div>
+
+  <!-- Signup Section -->
+  <section class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
+    <div class="w-full max-w-md">
+      <!-- Logo -->
+      <div class="text-center mb-8 fade-in">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style="background: var(--btn-bg);">
+          <span style="color: var(--btn-text); font-weight:800; font-size:1.5rem; font-family:'Outfit',sans-serif;">D</span>
+        </div>
+        <h1 class="text-3xl font-bold" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Create Account</h1>
+        <p class="mt-2 text-sm" style="color: var(--color-text-muted);">Join DummyStore today</p>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="glass-card rounded-2xl p-6 md:p-8 fade-in">
+        <form id="signup-form" onsubmit="handleSignup(event)">
+          <!-- Name Row -->
+          <div class="grid grid-cols-2 gap-4 mb-5">
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--color-text);">First Name</label>
+              <input type="text" id="signup-firstname" placeholder="John" class="glass-input" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--color-text);">Last Name</label>
+              <input type="text" id="signup-lastname" placeholder="Doe" class="glass-input" required>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-text);">Email</label>
+            <input type="email" id="signup-email" placeholder="john@example.com" class="glass-input" required>
+          </div>
+
+          <!-- Username -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-text);">Username</label>
+            <input type="text" id="signup-username" placeholder="Choose a username" class="glass-input" required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-text);">Password</label>
+            <div class="relative">
+              <input type="password" id="signup-password" placeholder="Min 6 characters" class="glass-input pr-12" required minlength="6">
+              <button type="button" onclick="togglePasswordVisibility('signup-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2" style="color:var(--color-text-muted)">
+                ${icons.eye}
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-5">
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-text);">Confirm Password</label>
+            <input type="password" id="signup-confirm" placeholder="Repeat your password" class="glass-input" required>
+          </div>
+
+          <!-- Note -->
+          <div class="glass rounded-xl p-3 mb-5">
+            <p class="text-xs" style="color: var(--color-text-muted);">
+              ℹ️ This is a simulated signup using DummyJSON's API. No real account will be created.
+            </p>
+          </div>
+
+          <!-- Error -->
+          <div id="signup-error" class="hidden mb-4 p-3 rounded-xl text-sm" style="background: rgba(239,68,68,0.1); color: var(--error); border: 1px solid rgba(239,68,68,0.2);"></div>
+
+          <!-- Submit -->
+          <button type="submit" id="signup-btn" class="btn-primary w-full py-3 rounded-xl text-base">
+            <span id="signup-btn-text">Create Account</span>
+            <span id="signup-spinner" class="hidden">
+              <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+            </span>
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-4 my-6">
+          <div class="flex-1 h-px" style="background: var(--glass-border);"></div>
+          <span class="text-xs" style="color: var(--color-text-muted);">or</span>
+          <div class="flex-1 h-px" style="background: var(--glass-border);"></div>
+        </div>
+
+        <!-- Login Link -->
+        <p class="text-center text-sm" style="color: var(--color-text-muted);">
+          Already have an account?
+          <a href="login.html" class="font-semibold underline" style="color: var(--color-text);">Login</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart — DummyStore</title>
+  <meta name="description" content="Review your cart items and proceed to checkout.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div id="navbar-container"></div>
+
+  <section class="py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold mb-6 fade-in" style="font-family:'Outfit';color:var(--color-text)">Shopping Cart</h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Cart Items -->
+        <div class="lg:col-span-2" id="cart-items-container">
+          <div class="glass-card rounded-2xl p-5"><div class="skeleton h-16 mb-3"></div><div class="skeleton h-16 mb-3"></div><div class="skeleton h-16"></div></div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div>
+          <div class="glass-card rounded-2xl p-6 sticky top-20 fade-in" id="cart-summary">
+            <div class="skeleton h-4 w-3/4 mb-3"></div>
+            <div class="skeleton h-4 w-1/2 mb-3"></div>
+            <div class="skeleton h-10 w-full mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+</html>

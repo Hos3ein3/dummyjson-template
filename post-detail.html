@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Detail — DummyStore</title>
+  <meta name="description" content="Read the full post and see community comments.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], heading: ['Outfit','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div id="navbar-container"></div>
+
+  <!-- Breadcrumb -->
+  <section class="pt-6 pb-2">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
+        <a href="index.html" class="hover:underline">Home</a>
+        <span>/</span>
+        <a href="posts.html" class="hover:underline">Posts</a>
+        <span>/</span>
+        <span id="breadcrumb-title" style="color: var(--color-text);">Loading...</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post Content -->
+  <section class="py-6" id="post-content">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-card rounded-2xl p-6 md:p-10">
+        <div class="skeleton h-6 w-3/4 mb-4"></div>
+        <div class="skeleton h-4 w-full mb-2"></div>
+        <div class="skeleton h-4 w-full mb-2"></div>
+        <div class="skeleton h-4 w-full mb-2"></div>
+        <div class="skeleton h-4 w-2/3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comments -->
+  <section class="py-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-6" style="font-family:'Outfit',sans-serif; color: var(--color-text);">Comments</h2>
+      <div class="space-y-4" id="comments-container">
+        <div class="glass-card rounded-xl p-5"><div class="skeleton h-4 w-1/3 mb-2"></div><div class="skeleton h-3 w-full"></div></div>
+        <div class="glass-card rounded-xl p-5"><div class="skeleton h-4 w-1/3 mb-2"></div><div class="skeleton h-3 w-full"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/post-detail.js"></script>
+</body>
+</html>
