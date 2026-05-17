@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Reviews — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Reviews</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">Customer reviews and comments</p>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="reviews-grid"><div class="partial-loader col-span-2"><div class="spinner"></div></div></div>
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',async()=>{
+  initDashboard([{label:'Content'},{label:'Reviews'}]);
+  try{
+    const d=await api.get('/comments?limit=12');
+    document.getElementById('reviews-grid').innerHTML=d.comments.map(c=>{
+      const stars=Math.floor(Math.random()*3)+3;
+      return `<div class="dash-card">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background:var(--btn-bg);color:var(--btn-text);font-weight:700;font-size:0.7rem">${(c.user?.fullName||'U')[0]}</div>
+          <div><p class="text-sm font-semibold" style="color:var(--color-text)">${c.user?.fullName||'Anonymous'}</p>
+          <div class="flex gap-0.5">${'⭐'.repeat(stars)}${'☆'.repeat(5-stars)}</div></div>
+        </div>
+        <p class="text-sm" style="color:var(--color-text-secondary)">${c.body}</p>
+        <div class="flex items-center gap-3 mt-3 text-xs" style="color:var(--color-text-muted)"><span>👍 ${c.likes||0}</span></div>
+      </div>`}).join('');
+  }catch(e){}
+});
+</script></body></html>

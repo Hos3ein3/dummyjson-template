@@ -19,8 +19,25 @@
         <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Wizard Form</h1>
         <p class="text-sm mb-6" style="color:var(--color-text-muted)">Multi-step form with validation & progress tracking</p>
 
-        <div class="dash-card" style="max-width:700px;margin:0 auto">
-          <div id="wizard-container"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Horizontal Wizard</h3>
+            <div id="wizard-container"></div>
+          </div>
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Vertical Wizard</h3>
+            <div id="wizard-vertical-container"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Pill Styled Wizard</h3>
+            <div id="wizard-pill-container"></div>
+          </div>
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Icon-Only Wizard</h3>
+            <div id="wizard-icon-container"></div>
+          </div>
         </div>
 
         <!-- Success Modal -->
@@ -43,6 +60,9 @@
   <script src="js/forms.js"></script>
   <script>
     let wizard;
+    let wizardVertical;
+    let wizardPill;
+    let wizardIcon;
     document.addEventListener('DOMContentLoaded', () => {
       initDashboard([{label:'Forms'},{label:'Wizard Form'}]);
 
@@ -96,7 +116,28 @@
       ]);
       wizard.render();
 
-      // Override next to populate review
+      wizardVertical = new WizardForm('wizard-vertical-container', [
+        { title: 'Step 1', content: '<div class="input-group"><label class="input-label">Name</label><input class="glass-input" required></div>' },
+        { title: 'Step 2', content: '<div class="input-group"><label class="input-label">Email</label><input class="glass-input" type="email" required></div>' },
+        { title: 'Step 3', content: '<p class="text-sm" style="color:var(--color-text-secondary)">All set! Submit the form.</p>' }
+      ], { variant: 'vertical', globalVarName: 'wizardVertical' });
+      wizardVertical.render();
+
+      wizardPill = new WizardForm('wizard-pill-container', [
+        { title: 'Start', content: '<p class="text-sm">Welcome to the setup.</p>' },
+        { title: 'Config', content: '<p class="text-sm">Configure your settings.</p>' },
+        { title: 'Finish', content: '<p class="text-sm">You are good to go.</p>' }
+      ], { variant: 'pill', globalVarName: 'wizardPill' });
+      wizardPill.render();
+
+      wizardIcon = new WizardForm('wizard-icon-container', [
+        { title: '1', content: '<p class="text-sm">Step 1 details.</p>' },
+        { title: '2', content: '<p class="text-sm">Step 2 details.</p>' },
+        { title: '3', content: '<p class="text-sm">Step 3 details.</p>' }
+      ], { variant: 'icon-only', globalVarName: 'wizardIcon' });
+      wizardIcon.render();
+
+      // Override next to populate review for horizontal
       const origNext = wizard.next.bind(wizard);
       wizard.next = function() {
         origNext();

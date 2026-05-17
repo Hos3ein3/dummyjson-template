@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Under Maintenance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="mesh-bg"></div>
+  <div class="dash-card text-center relative z-10 p-10 max-w-md w-full anim-pulse">
+    <div class="text-6xl mb-6">🛠️</div>
+    <h1 class="text-2xl font-bold mb-2" style="font-family:'Outfit';color:var(--color-text)">Under Maintenance</h1>
+    <p class="text-sm mb-6" style="color:var(--color-text-secondary)">We're currently performing scheduled maintenance to improve our services. Please check back soon.</p>
+    <div class="progress-bar mb-6"><div class="progress-fill" style="width:75%"></div></div>
+    <button class="btn-secondary rounded-xl px-8 py-3" onclick="location.reload()">Refresh Page</button>
+  </div>
+</body>
+</html>

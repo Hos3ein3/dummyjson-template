@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Products — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Products</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">Product cards with multiple grid layouts</p>
+<div class="grid-toolbar mb-4"><input class="glass-input py-1.5 text-sm" placeholder="Search products..." style="max-width:300px;border-radius:9999px" id="prod-search" oninput="filterProducts(this.value)"><span class="ml-auto text-xs" style="color:var(--color-text-muted)" id="prod-count"></span></div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="products-container"><div class="partial-loader col-span-4"><div class="spinner"></div></div></div>
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+let allProducts=[];
+document.addEventListener('DOMContentLoaded',async()=>{
+  initDashboard([{label:'Content'},{label:'Products'}]);
+  try{
+    const d=await api.getProducts(30,0);
+    allProducts=d.products;renderProducts(allProducts);
+  }catch(e){document.getElementById('products-container').innerHTML='<p style="color:var(--color-text-muted)">Failed to load</p>'}
+});
+function renderProducts(prods){
+  document.getElementById('prod-count').textContent=prods.length+' products';
+  document.getElementById('products-container').innerHTML=prods.map(p=>`
+    <div class="glass-card" style="overflow:hidden">
+      <div style="height:180px;background:var(--glass-bg);display:flex;align-items:center;justify-content:center;overflow:hidden">
+        <img src="${p.thumbnail}" alt="${p.title}" style="max-height:100%;object-fit:contain">
+      </div>
+      <div style="padding:1rem">
+        <span class="badge text-xs mb-2">${p.category}</span>
+        <h4 class="font-semibold text-sm line-clamp-1" style="color:var(--color-text);margin-top:0.25rem">${p.title}</h4>
+        <p class="text-xs line-clamp-2 mt-1" style="color:var(--color-text-muted)">${p.description}</p>
+        <div class="flex items-center justify-between mt-3">
+          <span class="font-bold" style="color:var(--color-text)">$${p.price}</span>
+          <span class="text-xs" style="color:var(--star)">⭐ ${p.rating.toFixed(1)}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function filterProducts(q){renderProducts(allProducts.filter(p=>p.title.toLowerCase().includes(q.toLowerCase())))}
+</script></body></html>

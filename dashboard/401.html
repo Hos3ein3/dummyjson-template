@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>401 Unauthorized</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="mesh-bg"></div>
+  <div class="dash-card text-center relative z-10 p-10 max-w-md w-full anim-slide-up">
+    <div class="text-7xl mb-4 font-bold" style="color:var(--star);font-family:'Outfit'">401</div>
+    <h1 class="text-2xl font-bold mb-2" style="font-family:'Outfit';color:var(--color-text)">Unauthorized Access</h1>
+    <p class="text-sm mb-8" style="color:var(--color-text-secondary)">You don't have permission to view this page. Please log in with appropriate credentials.</p>
+    <div class="flex flex-col gap-3">
+      <a href="index.html" class="btn-primary rounded-xl px-8 py-3">Login to Account</a>
+      <a href="index.html" class="btn-ghost rounded-xl px-8 py-3">Return Home</a>
+    </div>
+  </div>
+</body>
+</html>

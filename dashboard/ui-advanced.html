@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Advanced UI — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Advanced UI Components</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">Carousel, collapsible cards, popovers, tree view, canvas menu & more</p>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+  <!-- Carousel -->
+  <div class="dash-card lg:col-span-2">
+    <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Carousel</h3>
+    <div class="carousel" id="demo-carousel">
+      <div class="carousel-track">
+        <div class="carousel-slide" style="background:linear-gradient(135deg,#170C79,#56B6C6);height:300px;display:flex;align-items:center;justify-content:center"><div class="text-center"><h2 class="text-white text-2xl font-bold mb-2" style="font-family:Outfit">Welcome to Dashboard</h2><p class="text-white/70 text-sm">Build amazing interfaces</p></div></div>
+        <div class="carousel-slide" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);height:300px;display:flex;align-items:center;justify-content:center"><div class="text-center"><h2 class="text-white text-2xl font-bold mb-2" style="font-family:Outfit">Modern Design</h2><p class="text-white/70 text-sm">Glass morphism aesthetic</p></div></div>
+        <div class="carousel-slide" style="background:linear-gradient(135deg,#10B981,#3B82F6);height:300px;display:flex;align-items:center;justify-content:center"><div class="text-center"><h2 class="text-white text-2xl font-bold mb-2" style="font-family:Outfit">Fully Responsive</h2><p class="text-white/70 text-sm">Works on all devices</p></div></div>
+      </div>
+      <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">‹</button>
+      <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">›</button>
+    </div>
+    <div class="carousel-dots" id="carousel-dots"></div>
+  </div>
+
+  <!-- Collapsible Cards -->
+  <div>
+    <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Collapsible Cards</h3>
+    <div class="card-collapsible mb-3">
+      <div class="card-header-bar"><span class="font-semibold text-sm" style="color:var(--color-text)">📊 Analytics Overview</span><div class="card-actions"><button class="card-action-btn" onclick="this.closest('.card-collapsible').classList.toggle('collapsed')">▾</button><button class="card-action-btn" onclick="dashToast('Refreshed!','success')">↻</button><button class="card-action-btn" onclick="this.closest('.card-collapsible').remove();dashToast('Dismissed','info')">×</button></div></div>
+      <div class="card-body-content"><p class="text-sm" style="color:var(--color-text-secondary)">Revenue is up 12% this month. Click the buttons above to collapse, refresh, or dismiss this card.</p></div>
+    </div>
+    <div class="card-collapsible mb-3">
+      <div class="card-header-bar"><span class="font-semibold text-sm" style="color:var(--color-text)">📋 Recent Tasks</span><div class="card-actions"><button class="card-action-btn" onclick="this.closest('.card-collapsible').classList.toggle('collapsed')">▾</button><button class="card-action-btn" onclick="this.closest('.card-collapsible').remove()">×</button></div></div>
+      <div class="card-body-content"><p class="text-sm" style="color:var(--color-text-secondary)">5 tasks pending, 12 completed this week.</p></div>
+    </div>
+  </div>
+
+  <!-- Popover -->
+  <div>
+    <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Popovers</h3>
+    <div class="flex flex-wrap gap-3">
+      <div class="popover-wrap"><button class="btn-primary rounded-xl" onclick="this.parentElement.classList.toggle('open')">Top Popover</button><div class="popover-content popover-top"><p class="text-sm font-semibold mb-1" style="color:var(--color-text)">Popover Title</p><p class="text-xs" style="color:var(--color-text-muted)">This popover appears above the trigger element.</p></div></div>
+      <div class="popover-wrap"><button class="btn-secondary" onclick="this.parentElement.classList.toggle('open')">Bottom Popover</button><div class="popover-content popover-bottom"><p class="text-sm font-semibold mb-1" style="color:var(--color-text)">Information</p><p class="text-xs" style="color:var(--color-text-muted)">This is a bottom-positioned popover with rich content.</p><button class="btn-primary rounded-lg btn-sm mt-2" onclick="this.closest('.popover-wrap').classList.remove('open');dashToast('Confirmed!','success')">Got it</button></div></div>
+    </div>
+
+    <h3 class="font-semibold mb-3 mt-6" style="font-family:'Outfit';color:var(--color-text)">Canvas Menu (Action Sheet)</h3>
+    <div class="flex gap-3 flex-wrap">
+      <button class="btn-primary rounded-xl" onclick="openCanvasMenu()">Open Action Sheet</button>
+      <button class="btn-secondary rounded-xl" onclick="openCanvasMenuIos()">iOS Action Sheet</button>
+      <button class="btn-secondary rounded-xl" onclick="openControlCenter()">Control Center</button>
+      <button class="btn-secondary rounded-xl" onclick="openControlCenterFull()">Full Control Center</button>
+    </div>
+  </div>
+
+  <!-- Tree View -->
+  <div class="dash-card">
+    <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Tree View</h3>
+    <ul class="tree-list">
+      <li class="tree-node open"><span class="tree-toggle" onclick="this.parentElement.classList.toggle('open')"><span class="tree-arrow">▶</span> 📁 src</span>
+        <ul class="tree-list">
+          <li class="tree-node open"><span class="tree-toggle" onclick="this.parentElement.classList.toggle('open')"><span class="tree-arrow">▶</span> 📁 components</span>
+            <ul class="tree-list"><li class="tree-leaf">📄 Header.jsx</li><li class="tree-leaf">📄 Sidebar.jsx</li><li class="tree-leaf">📄 Footer.jsx</li></ul>
+          </li>
+          <li class="tree-node"><span class="tree-toggle" onclick="this.parentElement.classList.toggle('open')"><span class="tree-arrow">▶</span> 📁 utils</span>
+            <ul class="tree-list"><li class="tree-leaf">📄 helpers.js</li><li class="tree-leaf">📄 api.js</li></ul>
+          </li>
+          <li class="tree-leaf">📄 App.jsx</li><li class="tree-leaf">📄 index.js</li>
+        </ul>
+      </li>
+      <li class="tree-leaf">📄 package.json</li><li class="tree-leaf">📄 README.md</li>
+    </ul>
+  </div>
+
+  <!-- Input with Icon & Autocomplete -->
+  <div class="dash-card">
+    <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Input with Icon & Autocomplete</h3>
+    <div class="input-group">
+      <label class="input-label">Input with Left Icon</label>
+      <div class="input-prefix"><span class="prefix" id="demo-search-icon">🔍</span><input class="glass-input" placeholder="Search..."></div>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Google-style Autocomplete</label>
+      <div class="autocomplete-wrap" id="auto-1">
+        <input class="glass-input" placeholder="Type a programming language..." oninput="filterAutocomplete(this.value)" onfocus="document.getElementById('auto-1').classList.add('open')">
+        <div class="autocomplete-list" id="auto-list">
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">JavaScript</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">TypeScript</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">Python</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">Java</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">C#</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">Go</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">Rust</div>
+          <div class="autocomplete-item" onclick="selectAutoItem(this)">Swift</div>
+        </div>
+      </div>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Grouped Select</label>
+      <select class="glass-input select-grouped">
+        <option value="">Choose...</option>
+        <optgroup label="Frontend"><option>React</option><option>Vue</option><option>Angular</option><option>Svelte</option></optgroup>
+        <optgroup label="Backend"><option>Node.js</option><option>Django</option><option>ASP.NET</option><option>Spring</option></optgroup>
+        <optgroup label="Mobile"><option>React Native</option><option>Flutter</option><option>Swift</option></optgroup>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Canvas Menu (hidden by default) -->
+<div class="canvas-menu-overlay" id="canvas-overlay" onclick="closeCanvasMenu()"></div>
+<div class="canvas-menu" id="canvas-menu">
+  <div class="canvas-handle"></div>
+  <div class="canvas-menu-item" onclick="dashToast('Share','success');closeCanvasMenu()">📤 Share</div>
+  <div class="canvas-menu-item" onclick="dashToast('Copy Link','success');closeCanvasMenu()">🔗 Copy Link</div>
+  <div class="canvas-menu-item" onclick="dashToast('Edit','success');closeCanvasMenu()">✏️ Edit</div>
+  <div class="canvas-divider"></div>
+  <div class="canvas-menu-item" onclick="dashToast('Bookmark','success');closeCanvasMenu()">🔖 Add to Bookmarks</div>
+  <div class="canvas-menu-item" onclick="dashToast('Download','success');closeCanvasMenu()">📥 Download</div>
+  <div class="canvas-divider"></div>
+  <div class="canvas-menu-item" style="color:var(--error)" onclick="dashToast('Deleted','error');closeCanvasMenu()">🗑️ Delete</div>
+  <div style="padding:0.75rem 1.25rem"><button class="btn-secondary w-full" onclick="closeCanvasMenu()">Cancel</button></div>
+</div>
+
+<div class="canvas-menu ios-style" id="canvas-menu-ios">
+  <div class="ios-block">
+    <div class="canvas-menu-item text-center text-sm font-normal text-gray-500 border-b border-gray-200/20" style="padding:0.75rem;cursor:default;font-size:0.8rem">Select an action</div>
+    <div class="canvas-menu-item text-[#007AFF]" onclick="dashToast('Share','success');closeCanvasMenu()">Share</div>
+    <div class="canvas-divider"></div>
+    <div class="canvas-menu-item text-[#007AFF]" onclick="dashToast('Copy Link','success');closeCanvasMenu()">Copy Link</div>
+    <div class="canvas-divider"></div>
+    <div class="canvas-menu-item text-[#FF3B30]" onclick="dashToast('Deleted','error');closeCanvasMenu()">Delete</div>
+  </div>
+  <div class="ios-block">
+    <div class="canvas-menu-item ios-style-cancel" onclick="closeCanvasMenu()">Cancel</div>
+  </div>
+</div>
+
+<div class="control-center" id="control-center">
+  <div class="cc-row">
+    <div class="cc-block cc-toggles">
+      <div class="cc-btn active">✈️</div>
+      <div class="cc-btn active">📶</div>
+      <div class="cc-btn">📡</div>
+      <div class="cc-btn">🌙</div>
+      <div class="cc-btn">🔒</div>
+    </div>
+  </div>
+  <div class="cc-row">
+    <div class="cc-block cc-music">
+      <div class="text-sm font-semibold mb-1">Now Playing</div>
+      <div class="text-xs opacity-60 mb-2">Unknown Artist</div>
+      <div class="flex justify-center gap-4 mt-4">
+        <button class="btn-ghost p-1">⏮️</button>
+        <button class="btn-ghost p-1" style="font-size:1.5rem">▶️</button>
+        <button class="btn-ghost p-1">⏭️</button>
+      </div>
+    </div>
+  </div>
+  <div class="cc-row">
+    <div class="cc-block cc-slider-block">
+      <span class="text-xs font-bold mr-2">☼</span>
+      <input type="range" class="cc-slider" value="70">
+    </div>
+  </div>
+  <div class="cc-row">
+    <div class="cc-block cc-slider-block">
+      <span class="text-xs font-bold mr-2">🔊</span>
+      <input type="range" class="cc-slider" value="50">
+    </div>
+  </div>
+</div>
+
+<div class="control-center-full" id="control-center-full">
+  <div class="cc-full-close" onclick="closeCanvasMenu()">×</div>
+  <div class="cc-full-grid">
+    <div class="cc-block cc-full-toggles" style="grid-column: span 2">
+      <div class="flex gap-4">
+        <div class="cc-btn active" style="width:60px;height:60px;font-size:1.5rem">✈️</div>
+        <div class="cc-btn active" style="width:60px;height:60px;font-size:1.5rem">📶</div>
+      </div>
+      <div class="flex gap-4 mt-4">
+        <div class="cc-btn" style="width:60px;height:60px;font-size:1.5rem">📡</div>
+        <div class="cc-btn" style="width:60px;height:60px;font-size:1.5rem">🌙</div>
+      </div>
+    </div>
+    <div class="cc-block cc-music" style="grid-column: span 2">
+      <div class="text-lg font-bold mb-2">Music</div>
+      <div class="text-sm opacity-60 mb-4">Not Playing</div>
+      <div class="flex justify-center gap-6 mt-4">
+        <button class="btn-ghost p-2 text-2xl">⏮️</button>
+        <button class="btn-ghost p-2 text-3xl">▶️</button>
+        <button class="btn-ghost p-2 text-2xl">⏭️</button>
+      </div>
+    </div>
+    <div class="cc-block cc-slider-block" style="grid-column: span 4; flex-direction:column; padding:1.5rem">
+      <div class="flex w-full items-center mb-4">
+        <span class="text-lg mr-4">☼</span>
+        <input type="range" class="cc-slider" value="80" style="height:20px; border-radius:10px">
+      </div>
+      <div class="flex w-full items-center">
+        <span class="text-lg mr-4">🔊</span>
+        <input type="range" class="cc-slider" value="40" style="height:20px; border-radius:10px">
+      </div>
+    </div>
+    <div class="cc-block" style="height:100px; font-size:2rem">🔦</div>
+    <div class="cc-block" style="height:100px; font-size:2rem">⏱️</div>
+    <div class="cc-block" style="height:100px; font-size:2rem">📸</div>
+    <div class="cc-block" style="height:100px; font-size:2rem">🧮</div>
+  </div>
+</div>
+
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  initDashboard([{label:'Visuals'},{label:'Advanced UI'}]);
+  if(typeof dIcons !== 'undefined' && document.getElementById('demo-search-icon')) {
+    document.getElementById('demo-search-icon').innerHTML = dIcons.search;
+    document.getElementById('demo-search-icon').querySelector('svg').style.width = '18px';
+    document.getElementById('demo-search-icon').querySelector('svg').style.height = '18px';
+  }
+  // Carousel
+  initCarousel();
+});
+let carouselIdx=0;
+function initCarousel(){
+  const slides=document.querySelectorAll('#demo-carousel .carousel-slide');
+  const dots=document.getElementById('carousel-dots');
+  dots.innerHTML=Array.from(slides).map((_,i)=>`<div class="carousel-dot ${i===0?'active':''}" onclick="goToSlide(${i})"></div>`).join('');
+  setInterval(()=>moveCarousel(1),5000);
+}
+function moveCarousel(dir){
+  const slides=document.querySelectorAll('#demo-carousel .carousel-slide');
+  carouselIdx=(carouselIdx+dir+slides.length)%slides.length;
+  document.querySelector('#demo-carousel .carousel-track').style.transform=`translateX(-${carouselIdx*100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===carouselIdx));
+}
+function goToSlide(i){
+  carouselIdx=i;
+  document.querySelector('#demo-carousel .carousel-track').style.transform=`translateX(-${i*100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
+}
+function openCanvasMenu(){document.getElementById('canvas-overlay').classList.add('open');document.getElementById('canvas-menu').classList.add('open')}
+function openCanvasMenuIos(){document.getElementById('canvas-overlay').classList.add('open');document.getElementById('canvas-menu-ios').classList.add('open')}
+function openControlCenter(){document.getElementById('canvas-overlay').classList.add('open');document.getElementById('control-center').classList.add('open')}
+function openControlCenterFull(){document.getElementById('control-center-full').classList.add('open')}
+function closeCanvasMenu(){document.getElementById('canvas-overlay').classList.remove('open');document.getElementById('canvas-menu').classList.remove('open');document.getElementById('canvas-menu-ios').classList.remove('open');document.getElementById('control-center').classList.remove('open');document.getElementById('control-center-full').classList.remove('open')}
+function filterAutocomplete(q){
+  document.querySelectorAll('#auto-list .autocomplete-item').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q.toLowerCase())?'':'none'});
+  document.getElementById('auto-1').classList.toggle('open',q.length>0);
+}
+function selectAutoItem(el){
+  el.closest('.autocomplete-wrap').querySelector('input').value=el.textContent;
+  document.getElementById('auto-1').classList.remove('open');
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.autocomplete-wrap'))document.querySelectorAll('.autocomplete-wrap').forEach(w=>w.classList.remove('open'));if(!e.target.closest('.popover-wrap'))document.querySelectorAll('.popover-wrap').forEach(w=>w.classList.remove('open'))});
+</script></body></html>

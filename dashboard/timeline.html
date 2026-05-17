@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Timeline</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Vertical timeline with events and milestones</p>
+        <div class="dash-card" style="max-width:700px">
+          <div class="timeline">
+            <div class="timeline-item"><div class="timeline-dot" style="border-color:var(--color-accent)"></div><div class="timeline-content"><div class="flex justify-between items-center mb-1"><h4 class="font-semibold text-sm" style="color:var(--color-text)">Project Kickoff</h4><span class="text-xs" style="color:var(--color-text-muted)">Jan 15, 2026</span></div><p class="text-xs" style="color:var(--color-text-secondary)">Initial team meeting and requirement gathering phase began.</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot" style="border-color:var(--success)"></div><div class="timeline-content"><div class="flex justify-between items-center mb-1"><h4 class="font-semibold text-sm" style="color:var(--color-text)">Design Approved</h4><span class="text-xs" style="color:var(--color-text-muted)">Feb 20, 2026</span></div><p class="text-xs" style="color:var(--color-text-secondary)">UI/UX designs reviewed and approved by stakeholders.</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot" style="border-color:#8B5CF6"></div><div class="timeline-content"><div class="flex justify-between items-center mb-1"><h4 class="font-semibold text-sm" style="color:var(--color-text)">Development Sprint 1</h4><span class="text-xs" style="color:var(--color-text-muted)">Mar 10, 2026</span></div><p class="text-xs" style="color:var(--color-text-secondary)">Core features implemented. Authentication, dashboard layout, and API integration.</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot" style="border-color:var(--star)"></div><div class="timeline-content"><div class="flex justify-between items-center mb-1"><h4 class="font-semibold text-sm" style="color:var(--color-text)">Beta Release</h4><span class="text-xs" style="color:var(--color-text-muted)">Apr 25, 2026</span></div><p class="text-xs" style="color:var(--color-text-secondary)">Beta version deployed to staging for internal testing.</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot" style="border-color:var(--error)"></div><div class="timeline-content"><div class="flex justify-between items-center mb-1"><h4 class="font-semibold text-sm" style="color:var(--color-text)">Launch Day 🚀</h4><span class="text-xs" style="color:var(--color-text-muted)">May 17, 2026</span></div><p class="text-xs" style="color:var(--color-text-secondary)">Production deployment and public launch with all features.</p></div></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Visuals'},{label:'Timeline'}]));</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Kanban — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Kanban Board</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">Drag and drop task management</p>
+<div class="kanban-board">
+  <div class="kanban-column"><div class="kanban-column-header"><span>📋 To Do</span><span class="badge text-xs">3</span></div><div class="kanban-cards" id="todo">
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Design homepage mockup</p><div class="flex items-center gap-2 mt-2"><span class="badge text-xs" style="background:rgba(139,92,246,0.12);color:#8B5CF6">Design</span><span class="text-xs" style="color:var(--color-text-muted)">High</span></div></div>
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Setup CI/CD pipeline</p><div class="flex items-center gap-2 mt-2"><span class="badge text-xs">DevOps</span><span class="text-xs" style="color:var(--color-text-muted)">Medium</span></div></div>
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Write API documentation</p><div class="flex items-center gap-2 mt-2"><span class="badge text-xs" style="background:rgba(16,185,129,0.12);color:var(--success)">Docs</span></div></div>
+  </div></div>
+  <div class="kanban-column"><div class="kanban-column-header"><span>🔄 In Progress</span><span class="badge text-xs">2</span></div><div class="kanban-cards" id="progress">
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Implement auth flow</p><div class="flex items-center gap-2 mt-2"><span class="badge text-xs">Backend</span></div></div>
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Build dashboard components</p><div class="flex items-center gap-2 mt-2"><span class="badge text-xs" style="background:rgba(139,92,246,0.12);color:#8B5CF6">Frontend</span></div></div>
+  </div></div>
+  <div class="kanban-column"><div class="kanban-column-header"><span>✅ Done</span><span class="badge text-xs">2</span></div><div class="kanban-cards" id="done">
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Project setup & scaffolding</p></div>
+    <div class="kanban-card" draggable="true"><p class="text-sm font-medium" style="color:var(--color-text)">Database schema design</p></div>
+  </div></div>
+</div>
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  initDashboard([{label:'Apps'},{label:'Kanban Board'}]);
+  document.querySelectorAll('.kanban-card').forEach(card=>{
+    card.addEventListener('dragstart',e=>{e.target.classList.add('dragging');e.dataTransfer.effectAllowed='move'});
+    card.addEventListener('dragend',e=>e.target.classList.remove('dragging'));
+  });
+  document.querySelectorAll('.kanban-cards').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();const dragging=document.querySelector('.dragging');if(dragging)col.appendChild(dragging)});
+  });
+});
+</script></body></html>

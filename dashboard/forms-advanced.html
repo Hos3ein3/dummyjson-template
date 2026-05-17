@@ -18,7 +18,7 @@
       <main class="dash-content">
 
         <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Advanced Inputs</h1>
-        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Date pickers, file uploads, multi-select, tags, buttons & more</p>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Date pickers, time pickers, file uploads, multi-select, tags, buttons & more</p>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
@@ -26,20 +26,27 @@
           <div class="dash-card">
             <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Date Picker</h3>
             <div class="input-group">
-              <label class="input-label">Select Date</label>
+              <label class="input-label">Select Date (yyyy-mm-dd)<span class="info-badge">!<span class="info-tooltip">Click to open calendar. Select year and month from the header.</span></span></label>
               <div class="datepicker-wrap">
                 <input type="text" id="datepicker-1" class="glass-input" placeholder="Click to pick a date" readonly>
               </div>
             </div>
             <div class="input-group">
-              <label class="input-label">Date Range</label>
-              <div class="grid grid-cols-2 gap-2">
-                <div class="datepicker-wrap">
-                  <input type="text" id="datepicker-start" class="glass-input" placeholder="Start date" readonly>
-                </div>
-                <div class="datepicker-wrap">
-                  <input type="text" id="datepicker-end" class="glass-input" placeholder="End date" readonly>
-                </div>
+              <label class="input-label">Date (dd/mm/yyyy format)</label>
+              <div class="datepicker-wrap">
+                <input type="text" id="datepicker-fmt" class="glass-input" placeholder="DD/MM/YYYY" readonly>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Date Range Picker</label>
+              <div class="datepicker-wrap">
+                <input type="text" id="datepicker-range" class="glass-input" placeholder="Select start → end date" readonly>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">With Min/Max Validation<span class="info-badge">!<span class="info-tooltip">Cannot select dates before today or more than 30 days ahead.</span></span></label>
+              <div class="datepicker-wrap">
+                <input type="text" id="datepicker-valid" class="glass-input" placeholder="Only future dates (30 days)" readonly>
               </div>
             </div>
           </div>
@@ -48,19 +55,22 @@
           <div class="dash-card">
             <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Time Picker</h3>
             <div class="input-group">
-              <label class="input-label">Select Time</label>
-              <div class="grid grid-cols-3 gap-2">
-                <select class="glass-input text-center" id="tp-hour">
-                  ${Array.from({length:12},(_,i)=>`<option>${String(i+1).padStart(2,'0')}</option>`).join('')}
-                </select>
-                <select class="glass-input text-center" id="tp-min">
-                  ${Array.from({length:60},(_,i)=>`<option>${String(i).padStart(2,'0')}</option>`).join('')}
-                </select>
-                <select class="glass-input text-center" id="tp-ampm">
-                  <option>AM</option><option>PM</option>
-                </select>
+              <label class="input-label">12-hour Time</label>
+              <div class="timepicker-wrap">
+                <input type="text" id="timepicker-1" class="glass-input" placeholder="Click to pick a time" readonly>
               </div>
-              <div class="input-helper">Hour : Minute : AM/PM</div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">24-hour Time</label>
+              <div class="timepicker-wrap">
+                <input type="text" id="timepicker-24" class="glass-input" placeholder="24-hour format" readonly>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">15-min Steps</label>
+              <div class="timepicker-wrap">
+                <input type="text" id="timepicker-step" class="glass-input" placeholder="15-minute intervals" readonly>
+              </div>
             </div>
             <div class="input-group">
               <label class="input-label">Quick Time Select</label>
@@ -89,8 +99,12 @@
               </div>
             </div>
             <div class="input-group">
-              <label class="input-label">Simple File Input</label>
-              <input type="file" class="glass-input" style="padding:0.5rem">
+              <label class="input-label">Styled File Button</label>
+              <label class="file-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Choose File
+                <input type="file" onchange="this.closest('.file-btn').querySelector('span')?.remove();const s=document.createElement('span');s.className='text-xs';s.style.color='var(--color-text-muted)';s.textContent=this.files[0]?.name||'';this.closest('.file-btn').appendChild(s)">
+              </label>
             </div>
           </div>
 
@@ -201,6 +215,31 @@
             </div>
           </div>
 
+          <!-- Special Inputs -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Special Inputs</h3>
+            <div class="input-group">
+              <label class="input-label">Tags Input</label>
+              <div class="tags-input-wrap" id="tags-container" onclick="document.getElementById('tag-input').focus()">
+                <div class="tag-chip"><span>Design</span><span class="tag-remove" onclick="this.parentElement.remove();event.stopPropagation()">×</span></div>
+                <div class="tag-chip"><span>Development</span><span class="tag-remove" onclick="this.parentElement.remove();event.stopPropagation()">×</span></div>
+                <input type="text" id="tag-input" placeholder="Add tag..." onkeydown="if(event.key==='Enter'&&this.value.trim()!==''){const s=document.createElement('div');s.className='tag-chip';s.innerHTML='<span>'+this.value.trim()+'</span><span class=\'tag-remove\' onclick=\'this.parentElement.remove();event.stopPropagation()\'>×</span>';this.parentElement.insertBefore(s,this);this.value='';event.preventDefault();}">
+              </div>
+            </div>
+            
+            <div class="input-group mt-6">
+              <label class="input-label">Accordion Form</label>
+              <div style="border:1px solid var(--glass-border); border-radius:0.75rem; overflow:hidden">
+                <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="padding:0.75rem 1rem; background:var(--glass-bg-hover); cursor:pointer; font-weight:600; display:flex; justify-content:space-between">
+                  <span>Section 1: Basic Info</span><span>▼</span>
+                </div>
+                <div style="padding:1rem; border-top:1px solid var(--glass-border)">
+                  <div class="input-group"><label class="input-label">First Name</label><input type="text" class="glass-input"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Buttons Showcase -->
           <div class="dash-card lg:col-span-2">
             <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Buttons</h3>
@@ -229,16 +268,14 @@
                   <button class="btn-primary rounded-xl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Item</button>
                   <button class="btn-secondary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
                   <button class="btn-danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg> Delete</button>
-                  <button class="btn-ghost"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit</button>
                 </div>
               </div>
               <div>
-                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">ICON-ONLY BUTTONS</p>
-                <div class="flex flex-wrap gap-2">
-                  <button class="btn-primary rounded-lg" style="width:40px;height:40px;padding:0" data-tooltip="Add"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-                  <button class="btn-secondary" style="width:40px;height:40px;padding:0" data-tooltip="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
-                  <button class="btn-danger" style="width:40px;height:40px;padding:0" data-tooltip="Delete"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
-                  <button class="btn-ghost" style="width:40px;height:40px;padding:0" data-tooltip="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">ADVANCED BUTTONS</p>
+                <div class="flex flex-wrap gap-3">
+                  <button class="btn-icon btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg></button>
+                  <button class="btn-primary rounded-xl btn-loading" onclick="const b=this;b.classList.add('btn-loading');setTimeout(()=>b.classList.remove('btn-loading'),2000)">Loading</button>
+                  <button class="btn-secondary rounded-xl btn-loading" onclick="const b=this;b.classList.add('btn-loading');setTimeout(()=>b.classList.remove('btn-loading'),2000)">Loading</button>
                 </div>
               </div>
               <div>
@@ -269,14 +306,6 @@
                 </div>
               </div>
               <div>
-                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">BUTTON GROUP</p>
-                <div class="btn-group">
-                  <button class="btn-secondary">Left</button>
-                  <button class="btn-secondary" style="border-left:1px solid var(--glass-border)">Center</button>
-                  <button class="btn-secondary" style="border-left:1px solid var(--glass-border)">Right</button>
-                </div>
-              </div>
-              <div>
                 <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">LOADING BUTTON</p>
                 <button class="btn-primary rounded-xl" id="loading-btn" onclick="this.innerHTML='<svg class=\'animate-spin\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\'><circle class=\'opacity-25\' cx=\'12\' cy=\'12\' r=\'10\' stroke=\'currentColor\' stroke-width=\'4\'></circle><path class=\'opacity-75\' fill=\'currentColor\' d=\'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z\'></path></svg> Loading...';this.disabled=true;setTimeout(()=>{this.innerHTML='Submit';this.disabled=false;dashToast('Done!','success')},2000)">Submit</button>
               </div>
@@ -294,15 +323,26 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       initDashboard([{label:'Forms'},{label:'Advanced Inputs'}]);
-      // Init date pickers
+
+      // Date pickers
       datePickers['datepicker-1'] = new DatePicker('datepicker-1');
-      datePickers['datepicker-start'] = new DatePicker('datepicker-start');
-      datePickers['datepicker-end'] = new DatePicker('datepicker-end');
+      datePickers['datepicker-fmt'] = new DatePicker('datepicker-fmt', { format: 'dd/mm/yyyy' });
+      datePickers['datepicker-range'] = new DatePicker('datepicker-range', { range: true });
+
+      const today = new Date(); today.setHours(0,0,0,0);
+      const maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + 30);
+      datePickers['datepicker-valid'] = new DatePicker('datepicker-valid', { minDate: today, maxDate: maxDate });
+
+      // Time pickers
+      timePickers['timepicker-1'] = new TimePicker('timepicker-1');
+      timePickers['timepicker-24'] = new TimePicker('timepicker-24', { use24: true });
+      timePickers['timepicker-step'] = new TimePicker('timepicker-step', { step: 15 });
+
       // Init tags & OTP
       initTagsInput('tags-1');
       initOtpInput('otp-1');
-      // Init file drop
       initFileDrop('file-drop-1');
+
       // Close dropdowns on outside click
       document.addEventListener('click', (e) => {
         document.querySelectorAll('.btn-dropdown.open').forEach(d => {

@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Blog Posts — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Blog Posts</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">Content management for blog articles</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="blogs-grid"><div class="partial-loader col-span-3"><div class="spinner"></div></div></div>
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',async()=>{
+  initDashboard([{label:'Content'},{label:'Blog Posts'}]);
+  try{
+    const d=await api.get('/posts?limit=12');
+    document.getElementById('blogs-grid').innerHTML=d.posts.map(p=>`
+      <div class="dash-card" style="cursor:pointer" onclick="dashToast('Opening post #${p.id}','success')">
+        <div class="flex flex-wrap gap-1 mb-2">${p.tags.map(t=>'<span class="badge text-xs">'+t+'</span>').join('')}</div>
+        <h3 class="font-semibold text-sm mb-2 line-clamp-2" style="color:var(--color-text)">${p.title}</h3>
+        <p class="text-xs line-clamp-3 mb-3" style="color:var(--color-text-muted)">${p.body}</p>
+        <div class="flex items-center justify-between">
+          <span class="text-xs" style="color:var(--color-text-muted)">👍 ${p.reactions?.likes||0} · 👁 ${p.views||0}</span>
+          <span class="text-xs font-medium" style="color:var(--color-accent)">Read →</span>
+        </div>
+      </div>`).join('');
+  }catch(e){document.getElementById('blogs-grid').innerHTML='<p style="color:var(--color-text-muted)">Failed</p>'}
+});
+</script></body></html>

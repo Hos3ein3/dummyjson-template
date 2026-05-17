@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Calendar</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Full-size interactive calendar</p>
+        <div class="dash-card" id="full-calendar"></div>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const cal = document.getElementById('full-calendar');
+          let date = new Date(), events = [
+            {date:'2026-05-17',title:'Team Meeting',color:'var(--color-accent)'},
+            {date:'2026-05-20',title:'Project Deadline',color:'var(--error)'},
+            {date:'2026-05-22',title:'Design Review',color:'var(--success)'},
+            {date:'2026-05-25',title:'Sprint Planning',color:'#8B5CF6'}
+          ];
+          function render(){
+            const y=date.getFullYear(),m=date.getMonth();
+            const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+            const firstDay=new Date(y,m,1).getDay(), daysInMonth=new Date(y,m+1,0).getDate();
+            const today=new Date();
+            let html='<div class="flex items-center justify-between mb-4"><button class="btn-secondary btn-sm" onclick="navMonth(-1)">‹ Prev</button><h2 class="text-lg font-bold" style="font-family:Outfit;color:var(--color-text)">'+months[m]+' '+y+'</h2><button class="btn-secondary btn-sm" onclick="navMonth(1)">Next ›</button></div>';
+            html+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px">';
+            ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>html+='<div style="padding:0.5rem;text-align:center;font-size:0.75rem;font-weight:600;color:var(--color-text-muted)">'+d+'</div>');
+            for(let i=0;i<firstDay;i++) html+='<div style="padding:0.5rem;min-height:80px"></div>';
+            for(let d=1;d<=daysInMonth;d++){
+              const ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+              const isToday=d===today.getDate()&&m===today.getMonth()&&y===today.getFullYear();
+              const evts=events.filter(e=>e.date===ds);
+              html+='<div style="padding:0.5rem;min-height:80px;border:1px solid var(--glass-border);border-radius:0.5rem;'+(isToday?'background:var(--glass-bg-hover);':'')+'">';
+              html+='<div style="font-size:0.8rem;font-weight:'+(isToday?'700':'500')+';color:var(--color-text);margin-bottom:0.25rem">'+d+'</div>';
+              evts.forEach(e=>html+='<div style="font-size:0.65rem;padding:0.15rem 0.3rem;border-radius:0.25rem;background:'+e.color+'22;color:'+e.color+';margin-bottom:2px;border-left:2px solid '+e.color+'">'+e.title+'</div>');
+              html+='</div>';
+            }
+            html+='</div>';
+            cal.innerHTML=html;
+          }
+          window.navMonth=function(d){date.setMonth(date.getMonth()+d);render()};
+          render();
+        });
+        </script>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Apps'},{label:'Calendar'}]));</script>
+</body>
+</html>

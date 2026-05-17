@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helpdesk — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content" style="padding:0.75rem">
+        <div class="chat-layout">
+          <div class="chat-sidebar dash-card" style="padding:0.75rem">
+            <div class="relative mb-3"><input class="glass-input py-1.5 text-sm" placeholder="Search conversations..." style="border-radius:9999px"></div>
+            <div id="chat-contacts"></div>
+          </div>
+          <div class="chat-main dash-card" style="padding:0">
+            <div class="flex items-center gap-3 px-4 py-3" style="border-bottom:1px solid var(--glass-border)">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background:var(--btn-bg);color:var(--btn-text);font-weight:700;font-size:0.7rem" id="chat-avatar">?</div>
+              <div><p class="text-sm font-semibold" style="color:var(--color-text)" id="chat-name">Select a conversation</p><p class="text-xs" style="color:var(--color-text-muted)">Online</p></div>
+            </div>
+            <div class="chat-messages" id="chat-messages"><p class="text-sm text-center" style="color:var(--color-text-muted);margin:auto">Select a contact to start chatting</p></div>
+            <div class="chat-input-bar">
+              <input class="glass-input flex-1 py-2 text-sm" placeholder="Type a message..." id="chat-input" onkeydown="if(event.key==='Enter')sendMsg()">
+              <button class="btn-primary rounded-xl" onclick="sendMsg()">Send</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>
+    let currentChat = null;
+    const chatData = {};
+    document.addEventListener('DOMContentLoaded', async () => {
+      initDashboard([{label:'Apps'},{label:'Helpdesk'}]);
+      try {
+        const users = await api.get('/users?limit=8');
+        document.getElementById('chat-contacts').innerHTML = users.users.map(u =>
+          `<div class="chat-contact" onclick="openChat(${u.id},'${u.firstName} ${u.lastName}')">
+            <img src="${u.image}" class="w-8 h-8 rounded-full object-cover">
+            <div class="flex-1 min-w-0"><p class="text-sm font-medium" style="color:var(--color-text)">${u.firstName} ${u.lastName}</p><p class="text-xs line-clamp-1" style="color:var(--color-text-muted)">Click to chat</p></div>
+          </div>`
+        ).join('');
+      } catch(e){}
+    });
+    async function openChat(uid, name) {
+      currentChat = uid;
+      document.getElementById('chat-name').textContent = name;
+      document.getElementById('chat-avatar').textContent = name[0];
+      document.querySelectorAll('.chat-contact').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      if (!chatData[uid]) {
+        try {
+          const comments = await api.get('/comments/post/' + (uid % 10 + 1));
+          chatData[uid] = (comments.comments||[]).slice(0,6).map((c,i) => ({text: c.body, sent: i%2===0}));
+        } catch(e) { chatData[uid] = [{text:'Hello! How can I help?',sent:false}]; }
+      }
+      renderMessages();
+    }
+    function renderMessages() {
+      const msgs = chatData[currentChat] || [];
+      document.getElementById('chat-messages').innerHTML = msgs.map(m =>
+        `<div class="chat-bubble ${m.sent?'sent':'received'}">${m.text}</div>`
+      ).join('');
+      const el = document.getElementById('chat-messages');
+      el.scrollTop = el.scrollHeight;
+    }
+    function sendMsg() {
+      const input = document.getElementById('chat-input');
+      if (!input.value.trim() || !currentChat) return;
+      chatData[currentChat].push({text: input.value, sent: true});
+      input.value = '';
+      renderMessages();
+      setTimeout(() => {
+        chatData[currentChat].push({text: 'Thanks for your message! We\'ll get back to you shortly.', sent: false});
+        renderMessages();
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Icon Library — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Icon Library</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">All available SVG icons — click to copy</p>
+<div class="mb-4"><input class="glass-input py-1.5 text-sm" placeholder="Search icons..." style="max-width:300px;border-radius:9999px" oninput="filterIcons(this.value)"></div>
+<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3" id="icon-grid"></div>
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  initDashboard([{label:'Visuals'},{label:'Icon Library'}]);
+  renderIcons();
+});
+function renderIcons(filter=''){
+  const icons=Object.entries(dIcons).filter(([k])=>!filter||k.toLowerCase().includes(filter.toLowerCase()));
+  document.getElementById('icon-grid').innerHTML=icons.map(([name,svg])=>`
+    <div class="dash-card text-center cursor-pointer icon-card" style="padding:0.75rem" onclick="copyIcon('${name}')" data-name="${name}">
+      <div class="flex items-center justify-center mb-2" style="width:28px;height:28px;margin:0 auto;color:var(--color-text)">${svg}</div>
+      <p class="text-xs font-medium" style="color:var(--color-text-muted)">${name}</p>
+    </div>`).join('');
+}
+function filterIcons(q){renderIcons(q)}
+function copyIcon(name){
+  navigator.clipboard.writeText('dIcons.'+name).then(()=>dashToast('Copied: dIcons.'+name,'success'));
+}
+</script></body></html>

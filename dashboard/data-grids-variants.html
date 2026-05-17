@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Grid — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Data Grid Variants</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Showcasing different CSS styling variants of the data grid</p>
+
+        <!-- Default Grid -->
+        <div class="mb-8">
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">1. Default Glass Grid</h3>
+          <div id="grid-default"><div class="partial-loader"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Striped Grid -->
+        <div class="mb-8">
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">2. Striped Grid</h3>
+          <div id="grid-striped"><div class="partial-loader"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Borderless Grid -->
+        <div class="mb-8">
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">3. Borderless Minimal Grid</h3>
+          <div id="grid-borderless"><div class="partial-loader"><div class="spinner"></div></div></div>
+        </div>
+
+        <!-- Compact Grid -->
+        <div>
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">4. Compact Grid</h3>
+          <div id="grid-compact"><div class="partial-loader"><div class="spinner"></div></div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script src="js/grid.js"></script>
+  <script>
+    let gridDefault, gridStriped, gridBorderless, gridCompact;
+    document.addEventListener('DOMContentLoaded', async () => {
+      initDashboard([{label:'Data'},{label:'Grid Variants'}]);
+
+      const cols = [
+        { key: 'id', label: 'ID' },
+        { key: 'title', label: 'Title', render: (v) => `<span class="font-medium" style="color:var(--color-text)">${v}</span>` },
+        { key: 'category', label: 'Category', render: (v) => `<span class="badge text-xs">${v}</span>` },
+        { key: 'price', label: 'Price', render: (v) => `$${v.toFixed(2)}` }
+      ];
+
+      gridDefault = new DataGrid('grid-default', { perPage: 5, columns: cols, globalVar: 'gridDefault' });
+      gridStriped = new DataGrid('grid-striped', { perPage: 5, columns: cols, globalVar: 'gridStriped', tableClass: 'grid-striped' });
+      gridBorderless = new DataGrid('grid-borderless', { perPage: 5, columns: cols, globalVar: 'gridBorderless', tableClass: 'grid-borderless' });
+      gridCompact = new DataGrid('grid-compact', { perPage: 5, columns: cols, globalVar: 'gridCompact', tableClass: 'grid-compact' });
+
+      try {
+        const data = await api.getProducts(20, 0);
+        gridDefault.setData(data.products);
+        gridStriped.setData(data.products);
+        gridBorderless.setData(data.products);
+        gridCompact.setData(data.products);
+      } catch(e) { 
+        document.querySelectorAll('.partial-loader').forEach(el => el.innerHTML = '<p>Failed to load</p>'); 
+      }
+    });
+  </script>
+</body>
+</html>

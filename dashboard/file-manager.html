@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Manager — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">File Manager</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Browse and manage your files and folders</p>
+        <div class="fm-layout">
+          <div class="fm-tree dash-card" style="padding:0.75rem">
+            <h4 class="font-semibold text-sm mb-3" style="color:var(--color-text)">Folders</h4>
+            <ul class="tree-list">
+              <li class="tree-node open"><span class="tree-toggle" onclick="this.parentElement.classList.toggle('open')"><span class="tree-arrow">▶</span> 📁 Documents</span>
+                <ul class="tree-list">
+                  <li class="tree-leaf" onclick="dashToast('Opened Reports','success')">📁 Reports</li>
+                  <li class="tree-leaf" onclick="dashToast('Opened Invoices','success')">📁 Invoices</li>
+                </ul>
+              </li>
+              <li class="tree-node"><span class="tree-toggle" onclick="this.parentElement.classList.toggle('open')"><span class="tree-arrow">▶</span> 📁 Images</span>
+                <ul class="tree-list"><li class="tree-leaf">📁 Screenshots</li><li class="tree-leaf">📁 Photos</li></ul>
+              </li>
+              <li class="tree-node"><span class="tree-toggle" onclick="this.parentElement.classList.toggle('open')"><span class="tree-arrow">▶</span> 📁 Downloads</span>
+                <ul class="tree-list"><li class="tree-leaf">📁 Software</li></ul>
+              </li>
+            </ul>
+          </div>
+          <div class="flex-1">
+            <div class="grid-toolbar mb-4">
+              <div class="breadcrumb"><a href="#">Home</a><span class="sep">/</span><span class="current">Documents</span></div>
+              <button class="btn-primary rounded-xl btn-sm ml-auto">+ Upload</button>
+            </div>
+            <div class="fm-grid">
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">📁</div><span class="text-xs font-medium" style="color:var(--color-text)">Reports</span><span class="text-xs" style="color:var(--color-text-muted)">12 items</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">📁</div><span class="text-xs font-medium" style="color:var(--color-text)">Invoices</span><span class="text-xs" style="color:var(--color-text-muted)">8 items</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">📄</div><span class="text-xs font-medium" style="color:var(--color-text)">Budget.xlsx</span><span class="text-xs" style="color:var(--color-text-muted)">245 KB</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">📄</div><span class="text-xs font-medium" style="color:var(--color-text)">Proposal.pdf</span><span class="text-xs" style="color:var(--color-text-muted)">1.2 MB</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">🖼️</div><span class="text-xs font-medium" style="color:var(--color-text)">Banner.png</span><span class="text-xs" style="color:var(--color-text-muted)">890 KB</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">📄</div><span class="text-xs font-medium" style="color:var(--color-text)">Notes.docx</span><span class="text-xs" style="color:var(--color-text-muted)">56 KB</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">📦</div><span class="text-xs font-medium" style="color:var(--color-text)">Archive.zip</span><span class="text-xs" style="color:var(--color-text-muted)">15 MB</span></div>
+              <div class="fm-item" onclick="this.classList.toggle('selected')"><div class="fm-icon">🎵</div><span class="text-xs font-medium" style="color:var(--color-text)">Podcast.mp3</span><span class="text-xs" style="color:var(--color-text-muted)">8.4 MB</span></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Apps'},{label:'File Manager'}]));</script>
+</body>
+</html>

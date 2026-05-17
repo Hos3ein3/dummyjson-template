@@ -11,9 +11,12 @@ class DataGrid {
     this.sortCol = options.defaultSort || '';
     this.sortDir = 'asc';
     this.page = 1;
+    this.page = 1;
     this.perPage = options.perPage || 10;
     this.searchQuery = '';
     this.selectedIds = new Set();
+    this.globalVar = options.globalVar || 'grid';
+    this.tableClass = options.tableClass || '';
   }
 
   setData(data) {
@@ -74,7 +77,7 @@ class DataGrid {
     let html = `
       <div class="grid-toolbar">
         <div class="relative flex-1" style="max-width:300px">
-          <input type="text" placeholder="Search..." class="glass-input py-1.5 text-sm pl-9" value="${this.searchQuery}" oninput="grid.search(this.value)">
+          <input type="text" placeholder="Search..." class="glass-input py-1.5 text-sm pl-9" value="${this.searchQuery}" oninput="${this.globalVar}.search(this.value)">
           <span class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-40" style="width:16px;height:16px">${dIcons.search}</span>
         </div>
         ${this.selectedIds.size > 0 ? `
@@ -86,11 +89,11 @@ class DataGrid {
       </div>
 
       <div class="dash-card" style="padding:0;overflow-x:auto">
-        <table class="data-grid">
+        <table class="data-grid ${this.tableClass}">
           <thead><tr>
-            <th style="width:40px"><input type="checkbox" ${allSelected ? 'checked' : ''} onchange="grid.toggleSelectAll()"></th>
+            <th style="width:40px"><input type="checkbox" ${allSelected ? 'checked' : ''} onchange="${this.globalVar}.toggleSelectAll()"></th>
             ${this.columns.map(c => `
-              <th class="${this.sortCol === c.key ? 'sorted' : ''}" onclick="grid.sort('${c.key}')">
+              <th class="${this.sortCol === c.key ? 'sorted' : ''}" onclick="${this.globalVar}.sort('${c.key}')">
                 ${c.label}
                 <span class="sort-icon">${this.sortCol === c.key ? (this.sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
               </th>
@@ -99,7 +102,7 @@ class DataGrid {
           <tbody>
             ${pageData.length ? pageData.map(row => `
               <tr class="${this.selectedIds.has(row.id) ? 'selected' : ''}">
-                <td><input type="checkbox" ${this.selectedIds.has(row.id) ? 'checked' : ''} onchange="grid.toggleSelect(${row.id})"></td>
+                <td><input type="checkbox" ${this.selectedIds.has(row.id) ? 'checked' : ''} onchange="${this.globalVar}.toggleSelect(${row.id})"></td>
                 ${this.columns.map(c => `<td>${c.render ? c.render(row[c.key], row) : (row[c.key] ?? '')}</td>`).join('')}
               </tr>
             `).join('') : `<tr><td colspan="${this.columns.length + 1}" class="text-center py-8" style="color:var(--color-text-muted)">No data found</td></tr>`}
@@ -111,15 +114,15 @@ class DataGrid {
     // Pagination
     if (totalPages > 1) {
       html += '<div class="pagination mt-4">';
-      if (this.page > 1) html += `<button class="page-btn" onclick="grid.goToPage(${this.page - 1})">‹</button>`;
+      if (this.page > 1) html += `<button class="page-btn" onclick="${this.globalVar}.goToPage(${this.page - 1})">‹</button>`;
       for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || Math.abs(i - this.page) <= 2) {
-          html += `<button class="page-btn ${i === this.page ? 'active' : ''}" onclick="grid.goToPage(${i})">${i}</button>`;
+          html += `<button class="page-btn ${i === this.page ? 'active' : ''}" onclick="${this.globalVar}.goToPage(${i})">${i}</button>`;
         } else if (Math.abs(i - this.page) === 3) {
           html += `<span class="px-1" style="color:var(--color-text-muted)">…</span>`;
         }
       }
-      if (this.page < totalPages) html += `<button class="page-btn" onclick="grid.goToPage(${this.page + 1})">›</button>`;
+      if (this.page < totalPages) html += `<button class="page-btn" onclick="${this.globalVar}.goToPage(${this.page + 1})">›</button>`;
       html += '</div>';
     }
 

@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Animations — Dashboard</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script><link rel="stylesheet" href="../css/styles.css"><link rel="stylesheet" href="css/dashboard.css"></head><body><div class="mesh-bg"></div><div id="app" class="dash-layout"><aside class="dash-sidebar" id="sidebar-container"></aside><div class="dash-main"><header class="dash-topbar" id="topbar-container"></header><main class="dash-content">
+<h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Animation Showcase</h1>
+<p class="text-sm mb-6" style="color:var(--color-text-muted)">Interactive demos of all available CSS animations</p>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="anim-grid"></div>
+</main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  initDashboard([{label:'Visuals'},{label:'Animations'}]);
+  const anims=[
+    {name:'Shake',class:'anim-shake',icon:'🫨'},
+    {name:'Bounce',class:'anim-bounce',icon:'⬆️'},
+    {name:'Pulse',class:'anim-pulse',icon:'💓'},
+    {name:'Flip',class:'anim-flip',icon:'🔄'},
+    {name:'Slide Left',class:'anim-slide-left',icon:'⬅️'},
+    {name:'Slide Right',class:'anim-slide-right',icon:'➡️'},
+    {name:'Slide Up',class:'anim-slide-up',icon:'⬆️'},
+    {name:'Slide Down',class:'anim-slide-down',icon:'⬇️'},
+    {name:'Zoom In',class:'anim-zoom',icon:'🔍'},
+    {name:'Zoom Out',class:'anim-zoom-out',icon:'🔬'},
+    {name:'Fade In',class:'anim-fade-in',icon:'👻'},
+    {name:'Fade Out',class:'anim-fade-out',icon:'💨'},
+    {name:'Rubber Band',class:'anim-rubber',icon:'🪀'},
+    {name:'Wobble',class:'anim-wobble',icon:'〰️'},
+    {name:'Heartbeat',class:'anim-heartbeat',icon:'💖'},
+    {name:'Jello',class:'anim-jello',icon:'🟢'},
+    {name:'Swing',class:'anim-swing',icon:'🔔'},
+    {name:'Rotate In',class:'anim-rotate-in',icon:'🌀'},
+    {name:'Bounce In',class:'anim-bounce-in',icon:'🪩'},
+    {name:'Tada',class:'anim-tada',icon:'🎉'},
+    {name:'Flash',class:'anim-flash',icon:'📸'},
+    {name:'Light Speed',class:'anim-lightspeed',icon:'🚀'},
+    {name:'Hinge',class:'anim-hinge',icon:'🚪'},
+    {name:'Roll In',class:'anim-roll-in',icon:'🧶'},
+  ];
+  document.getElementById('anim-grid').innerHTML=anims.map(a=>`
+    <div class="dash-card text-center cursor-pointer" onclick="playAnim(this,'${a.class}')">
+      <div class="text-3xl mb-2 anim-target">${a.icon}</div>
+      <p class="text-sm font-semibold" style="color:var(--color-text)">${a.name}</p>
+      <p class="text-xs mt-1" style="color:var(--color-text-muted)">Click to play</p>
+      <code class="text-xs mt-2 block" style="color:var(--color-accent)">.${a.class}</code>
+    </div>`).join('');
+});
+function playAnim(card, cls){
+  const target=card.querySelector('.anim-target');
+  target.classList.remove(cls);
+  void target.offsetWidth;
+  target.classList.add(cls);
+  setTimeout(()=>target.classList.remove(cls),1500);
+}
+</script></body></html>

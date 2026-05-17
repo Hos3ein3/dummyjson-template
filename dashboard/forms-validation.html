@@ -17,7 +17,7 @@
       <header class="dash-topbar" id="topbar-container"></header>
       <main class="dash-content">
         <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Input Validation</h1>
-        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Real-time validation, error/success states, password strength</p>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Real-time validation, error/success states, password strength, checkbox & radio</p>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Real-time Validation Form -->
@@ -25,12 +25,12 @@
             <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Real-time Validation</h3>
             <form id="validation-form" onsubmit="event.preventDefault();if(validateForm('validation-form'))dashToast('Form is valid!','success');else dashToast('Fix errors first','error')">
               <div class="input-group">
-                <label class="input-label">Full Name <span class="required">*</span></label>
+                <label class="input-label">Full Name <span class="required">*</span><span class="info-badge">!<span class="info-tooltip">Enter your legal full name (minimum 3 characters).</span></span></label>
                 <input class="glass-input" data-validate="required|min:3" oninput="validateField(this)" placeholder="Min 3 characters">
                 <div class="input-error-msg"></div>
               </div>
               <div class="input-group">
-                <label class="input-label">Email <span class="required">*</span></label>
+                <label class="input-label">Email <span class="required">*</span><span class="info-badge">!<span class="info-tooltip">We'll never share your email with anyone.</span></span></label>
                 <input type="email" class="glass-input" data-validate="required|email" oninput="validateField(this)" placeholder="valid@email.com">
                 <div class="input-error-msg"></div>
               </div>
@@ -96,6 +96,49 @@
             </div>
           </div>
 
+          <!-- Checkbox & Radio Validation -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Checkbox Validation</h3>
+            <form id="check-form" onsubmit="event.preventDefault();validateCheckboxForm()">
+              <div class="mb-4">
+                <label class="input-label mb-2">Select at least 2 skills <span class="required">*</span><span class="info-badge">!<span class="info-tooltip">Choose at minimum 2 skills to continue.</span></span></label>
+                <label class="check-group"><input type="checkbox" name="skills" id="sk1"><span class="custom-check"></span><span>JavaScript</span></label>
+                <label class="check-group"><input type="checkbox" name="skills" id="sk2"><span class="custom-check"></span><span>TypeScript</span></label>
+                <label class="check-group"><input type="checkbox" name="skills" id="sk3"><span class="custom-check"></span><span>Python</span></label>
+                <label class="check-group"><input type="checkbox" name="skills" id="sk4"><span class="custom-check"></span><span>C#</span></label>
+                <div class="check-error-msg" id="skills-error">Please select at least 2 skills</div>
+              </div>
+              <div class="mb-4">
+                <label class="input-label mb-2">Agree to terms <span class="required">*</span></label>
+                <label class="check-group" id="terms-group"><input type="checkbox" name="terms" id="terms-cb"><span class="custom-check"></span><span>I agree to the Terms of Service and Privacy Policy</span></label>
+                <div class="check-error-msg" id="terms-error">You must agree to the terms</div>
+              </div>
+              <button type="submit" class="btn-primary rounded-xl w-full py-2.5">Validate Checkboxes</button>
+            </form>
+          </div>
+
+          <!-- Radio Validation -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Radio Validation</h3>
+            <form id="radio-form" onsubmit="event.preventDefault();validateRadioForm()">
+              <div class="mb-4">
+                <label class="input-label mb-2">Select plan <span class="required">*</span></label>
+                <label class="check-group"><input type="radio" name="plan" id="p1" value="free"><span class="custom-radio"></span><span>Free — $0/month</span></label>
+                <label class="check-group"><input type="radio" name="plan" id="p2" value="pro"><span class="custom-radio"></span><span>Pro — $9.99/month</span></label>
+                <label class="check-group"><input type="radio" name="plan" id="p3" value="enterprise"><span class="custom-radio"></span><span>Enterprise — $29.99/month</span></label>
+                <div class="check-error-msg" id="plan-error">Please select a plan</div>
+              </div>
+              <div class="mb-4">
+                <label class="input-label mb-2">Preferred contact <span class="required">*</span></label>
+                <label class="check-group"><input type="radio" name="contact" id="c1" value="email"><span class="custom-radio"></span><span>Email</span></label>
+                <label class="check-group"><input type="radio" name="contact" id="c2" value="phone"><span class="custom-radio"></span><span>Phone</span></label>
+                <label class="check-group"><input type="radio" name="contact" id="c3" value="sms"><span class="custom-radio"></span><span>SMS</span></label>
+                <div class="check-error-msg" id="contact-error">Please select a contact method</div>
+              </div>
+              <button type="submit" class="btn-primary rounded-xl w-full py-2.5">Validate Radios</button>
+            </form>
+          </div>
+
           <!-- Error Summary -->
           <div class="dash-card lg:col-span-2">
             <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Form Error Summary</h3>
@@ -136,6 +179,49 @@
       if (!conf) { group.classList.remove('has-error','has-success'); msg.style.display='none'; return; }
       if (pw !== conf) { group.classList.add('has-error'); group.classList.remove('has-success'); msg.textContent='Passwords do not match'; msg.style.display='block'; }
       else { group.classList.remove('has-error'); group.classList.add('has-success'); msg.style.display='none'; }
+    }
+    function validateCheckboxForm() {
+      let valid = true;
+      // Skills: at least 2
+      const skills = document.querySelectorAll('input[name="skills"]:checked');
+      const skillGroups = document.querySelectorAll('input[name="skills"]');
+      if (skills.length < 2) {
+        skillGroups.forEach(s => s.closest('.check-group').classList.add('has-error'));
+        document.getElementById('skills-error').style.display = 'block';
+        valid = false;
+      } else {
+        skillGroups.forEach(s => s.closest('.check-group').classList.remove('has-error'));
+        document.getElementById('skills-error').style.display = 'none';
+      }
+      // Terms
+      const terms = document.getElementById('terms-cb');
+      if (!terms.checked) {
+        document.getElementById('terms-group').classList.add('has-error');
+        document.getElementById('terms-error').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('terms-group').classList.remove('has-error');
+        document.getElementById('terms-error').style.display = 'none';
+      }
+      if (valid) dashToast('Checkboxes valid!', 'success');
+      else dashToast('Fix checkbox errors', 'error');
+    }
+    function validateRadioForm() {
+      let valid = true;
+      ['plan', 'contact'].forEach(name => {
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        const groups = document.querySelectorAll(`input[name="${name}"]`);
+        if (!checked) {
+          groups.forEach(g => g.closest('.check-group').classList.add('has-error'));
+          document.getElementById(`${name}-error`).style.display = 'block';
+          valid = false;
+        } else {
+          groups.forEach(g => g.closest('.check-group').classList.remove('has-error'));
+          document.getElementById(`${name}-error`).style.display = 'none';
+        }
+      });
+      if (valid) dashToast('Radio selections valid!', 'success');
+      else dashToast('Fix radio errors', 'error');
     }
   </script>
 </body>
