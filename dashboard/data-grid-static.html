@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Grid Template — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Data Grid — Static Template</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Pure HTML/CSS data grid template — copy any section you need</p>
+
+        <!-- ╔══════════════════════════════════════════╗ -->
+        <!-- ║  SECTION 1: FULL STATIC DATA GRID        ║ -->
+        <!-- ╚══════════════════════════════════════════╝ -->
+        <div class="mb-10">
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Static Data Grid</h3>
+
+          <!-- ── Action Bar ── -->
+          <div class="grid-action-bar">
+            <div class="grid-action-left">
+              <button class="btn-primary btn-sm rounded-lg" onclick="document.getElementById('upsert-overlay').classList.add('open');document.getElementById('upsert-panel').classList.add('open')">
+                <span class="grid-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Add Product
+              </button>
+              <button class="btn-secondary btn-sm">
+                <span class="grid-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>Export CSV
+              </button>
+              <button class="btn-ghost btn-sm">
+                <span class="grid-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span>Print
+              </button>
+              <button class="btn-ghost btn-sm">
+                <span class="grid-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>Refresh
+              </button>
+            </div>
+            <div class="grid-action-right">
+              <!-- Selection info (shown when items selected) -->
+              <div class="grid-selection-info">
+                <span class="grid-selection-count">3 selected</span>
+                <button class="btn-danger btn-sm">Delete</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Toolbar: Search + Filter Toggle + Page Size ── -->
+          <div class="grid-toolbar">
+            <div class="grid-toolbar-left">
+              <div class="grid-search-box">
+                <span class="grid-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                <input type="text" placeholder="Search all columns..." class="glass-input grid-search-input" value="">
+              </div>
+              <button class="btn-ghost btn-sm grid-filter-toggle active has-active">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+                Filters
+                <span class="filter-dot"></span>
+              </button>
+            </div>
+            <div class="grid-toolbar-right">
+              <div class="grid-page-size">
+                <label class="grid-page-size-label">Show</label>
+                <select class="glass-input grid-page-size-select">
+                  <option>5</option>
+                  <option selected>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                <span class="grid-page-size-label">entries</span>
+              </div>
+              <span class="grid-results-count">48 results</span>
+            </div>
+          </div>
+
+          <!-- ── Filter Panel ── -->
+          <div class="grid-filter-panel">
+            <div class="grid-filter-row">
+              <!-- Dropdown filter -->
+              <div class="grid-filter-item">
+                <label class="grid-filter-label">Category</label>
+                <select class="glass-input grid-filter-select">
+                  <option value="">All</option>
+                  <option>Electronics</option>
+                  <option>Clothing</option>
+                  <option>Furniture</option>
+                  <option>Groceries</option>
+                </select>
+              </div>
+              <!-- Text filter -->
+              <div class="grid-filter-item">
+                <label class="grid-filter-label">Brand</label>
+                <input type="text" class="glass-input grid-filter-input" placeholder="Filter brand...">
+              </div>
+              <!-- Range filter -->
+              <div class="grid-filter-item grid-filter-range">
+                <label class="grid-filter-label">Price Range</label>
+                <div class="grid-filter-range-inputs">
+                  <input type="number" class="glass-input grid-filter-input" placeholder="Min">
+                  <span class="grid-filter-range-sep">–</span>
+                  <input type="number" class="glass-input grid-filter-input" placeholder="Max">
+                </div>
+              </div>
+              <!-- Range filter -->
+              <div class="grid-filter-item grid-filter-range">
+                <label class="grid-filter-label">Rating</label>
+                <div class="grid-filter-range-inputs">
+                  <input type="number" class="glass-input grid-filter-input" placeholder="Min">
+                  <span class="grid-filter-range-sep">–</span>
+                  <input type="number" class="glass-input grid-filter-input" placeholder="Max">
+                </div>
+              </div>
+              <!-- Clear All -->
+              <div class="grid-filter-item" style="align-self:flex-end">
+                <button class="btn-ghost btn-sm">Clear All</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Table ── -->
+          <div class="dash-card" style="padding:0;overflow-x:auto">
+            <table class="data-grid">
+              <thead>
+                <tr>
+                  <th style="width:48px">
+                    <label class="grid-check">
+                      <input type="checkbox">
+                      <span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span>
+                    </label>
+                  </th>
+                  <th>ID <span class="sort-icon">↕</span></th>
+                  <th>Image <span class="sort-icon">↕</span></th>
+                  <th class="sorted">Title <span class="sort-icon">↑</span></th>
+                  <th>Category <span class="sort-icon">↕</span></th>
+                  <th>Price <span class="sort-icon">↕</span></th>
+                  <th>Rating <span class="sort-icon">↕</span></th>
+                  <th>Stock <span class="sort-icon">↕</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><label class="grid-check"><input type="checkbox" checked><span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span></label></td>
+                  <td>1</td>
+                  <td><img src="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)"></td>
+                  <td><span class="font-medium" style="color:var(--color-text)">Essence Mascara Lash Princess</span></td>
+                  <td><span class="badge text-xs">beauty</span></td>
+                  <td>$9.99</td>
+                  <td>⭐ 4.9</td>
+                  <td><span style="color:var(--success)">45</span></td>
+                </tr>
+                <tr class="selected">
+                  <td><label class="grid-check"><input type="checkbox" checked><span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span></label></td>
+                  <td>2</td>
+                  <td><img src="https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)"></td>
+                  <td><span class="font-medium" style="color:var(--color-text)">Eyeshadow Palette with Mirror</span></td>
+                  <td><span class="badge text-xs">beauty</span></td>
+                  <td>$19.99</td>
+                  <td>⭐ 3.3</td>
+                  <td><span style="color:var(--success)">32</span></td>
+                </tr>
+                <tr>
+                  <td><label class="grid-check"><input type="checkbox"><span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span></label></td>
+                  <td>3</td>
+                  <td><img src="https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)"></td>
+                  <td><span class="font-medium" style="color:var(--color-text)">Powder Canister</span></td>
+                  <td><span class="badge text-xs">beauty</span></td>
+                  <td>$14.99</td>
+                  <td>⭐ 3.9</td>
+                  <td><span style="color:var(--success)">18</span></td>
+                </tr>
+                <tr>
+                  <td><label class="grid-check"><input type="checkbox"><span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span></label></td>
+                  <td>4</td>
+                  <td><img src="https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/thumbnail.png" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)"></td>
+                  <td><span class="font-medium" style="color:var(--color-text)">Calvin Klein CK One</span></td>
+                  <td><span class="badge text-xs">fragrances</span></td>
+                  <td>$49.99</td>
+                  <td>⭐ 4.7</td>
+                  <td><span style="color:var(--success)">27</span></td>
+                </tr>
+                <tr class="selected">
+                  <td><label class="grid-check"><input type="checkbox" checked><span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span></label></td>
+                  <td>5</td>
+                  <td><img src="https://cdn.dummyjson.com/products/images/furniture/Annibale%20Colombo%20Bed/thumbnail.png" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)"></td>
+                  <td><span class="font-medium" style="color:var(--color-text)">Annibale Colombo Bed</span></td>
+                  <td><span class="badge text-xs">furniture</span></td>
+                  <td>$1,899.99</td>
+                  <td>⭐ 4.1</td>
+                  <td><span style="color:var(--error)">5</span></td>
+                </tr>
+                <tr>
+                  <td><label class="grid-check"><input type="checkbox"><span class="grid-check-box"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5 6 5 8.5 9.5 3.5"/></svg></span></label></td>
+                  <td>6</td>
+                  <td><img src="https://cdn.dummyjson.com/products/images/groceries/Apple/thumbnail.png" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)"></td>
+                  <td><span class="font-medium" style="color:var(--color-text)">Apple</span></td>
+                  <td><span class="badge text-xs">groceries</span></td>
+                  <td>$1.99</td>
+                  <td>⭐ 2.9</td>
+                  <td><span style="color:var(--success)">96</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- ── Pagination Bar ── -->
+          <div class="grid-pagination-bar">
+            <div class="grid-pagination-info">
+              Showing <strong>1</strong>–<strong>10</strong> of <strong>48</strong>
+            </div>
+            <div class="pagination">
+              <button class="page-btn" disabled>«</button>
+              <button class="page-btn" disabled>‹</button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <span class="page-dots">…</span>
+              <button class="page-btn">5</button>
+              <button class="page-btn">›</button>
+              <button class="page-btn">»</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ╔══════════════════════════════════════════╗ -->
+        <!-- ║  SECTION 2: SKELETON + SPINNER LOADER    ║ -->
+        <!-- ╚══════════════════════════════════════════╝ -->
+        <div>
+          <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Skeleton Loader State</h3>
+
+          <div class="grid-skeleton">
+            <!-- Skeleton Toolbar -->
+            <div class="grid-skeleton-toolbar">
+              <div class="skeleton" style="width:200px;height:36px;border-radius:0.5rem"></div>
+              <div class="skeleton" style="width:90px;height:36px;border-radius:0.5rem"></div>
+              <div style="flex:1"></div>
+              <div class="skeleton" style="width:120px;height:36px;border-radius:0.5rem"></div>
+            </div>
+
+            <!-- Skeleton Table -->
+            <div class="dash-card" style="padding:0;overflow:hidden;position:relative">
+              <!-- Spinner Overlay -->
+              <div class="grid-skeleton-spinner-overlay">
+                <div class="spinner"></div>
+              </div>
+
+              <table class="data-grid">
+                <thead>
+                  <tr>
+                    <th><div class="skeleton" style="width:18px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:30px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:50px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:65px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:70px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:45px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:55px;height:12px;border-radius:3px"></div></th>
+                    <th><div class="skeleton" style="width:42px;height:12px;border-radius:3px"></div></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><div class="skeleton" style="width:18px;height:18px;border-radius:5px"></div></td><td><div class="skeleton" style="width:30%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40px;height:40px;border-radius:8px"></div></td><td><div class="skeleton" style="width:60%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:50%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:45%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:35%;height:13px;border-radius:3px"></div></td></tr>
+                  <tr><td><div class="skeleton" style="width:18px;height:18px;border-radius:5px"></div></td><td><div class="skeleton" style="width:25%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40px;height:40px;border-radius:8px"></div></td><td><div class="skeleton" style="width:55%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:45%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:50%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:35%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40%;height:13px;border-radius:3px"></div></td></tr>
+                  <tr><td><div class="skeleton" style="width:18px;height:18px;border-radius:5px"></div></td><td><div class="skeleton" style="width:35%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40px;height:40px;border-radius:8px"></div></td><td><div class="skeleton" style="width:65%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:55%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:45%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:30%;height:13px;border-radius:3px"></div></td></tr>
+                  <tr><td><div class="skeleton" style="width:18px;height:18px;border-radius:5px"></div></td><td><div class="skeleton" style="width:28%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40px;height:40px;border-radius:8px"></div></td><td><div class="skeleton" style="width:50%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:55%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:50%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:45%;height:13px;border-radius:3px"></div></td></tr>
+                  <tr><td><div class="skeleton" style="width:18px;height:18px;border-radius:5px"></div></td><td><div class="skeleton" style="width:32%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40px;height:40px;border-radius:8px"></div></td><td><div class="skeleton" style="width:58%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:48%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:42%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:38%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:50%;height:13px;border-radius:3px"></div></td></tr>
+                  <tr><td><div class="skeleton" style="width:18px;height:18px;border-radius:5px"></div></td><td><div class="skeleton" style="width:22%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:40px;height:40px;border-radius:8px"></div></td><td><div class="skeleton" style="width:62%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:52%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:48%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:42%;height:13px;border-radius:3px"></div></td><td><div class="skeleton" style="width:35%;height:13px;border-radius:3px"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Skeleton Pagination -->
+            <div class="grid-skeleton-footer">
+              <div class="skeleton" style="width:160px;height:14px;border-radius:3px"></div>
+              <div style="display:flex;gap:0.35rem">
+                <div class="skeleton" style="width:32px;height:32px;border-radius:0.5rem"></div>
+                <div class="skeleton" style="width:32px;height:32px;border-radius:0.5rem"></div>
+                <div class="skeleton" style="width:32px;height:32px;border-radius:0.5rem"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>initDashboard([{label:'Data'},{label:'Grid Template'}]));
+    function closeUpsert(){document.getElementById('upsert-overlay').classList.remove('open');document.getElementById('upsert-panel').classList.remove('open')}
+  </script>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  UPSERT PANEL (Full-screen Slide-over)   ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="upsert-overlay" id="upsert-overlay" onclick="closeUpsert()"></div>
+  <div class="upsert-panel" id="upsert-panel">
+
+    <!-- Sticky Header -->
+    <div class="upsert-header">
+      <div class="upsert-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Create Product
+        <span class="badge text-xs">Draft</span>
+      </div>
+      <button class="upsert-close" onclick="closeUpsert()">✕</button>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="upsert-body">
+
+      <!-- ── Tab Form Group ── -->
+      <div id="upsert-tabs">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="ut-general" onclick="switchTab('upsert-tabs','ut-general')">General</button>
+          <button class="tab-btn" data-tab="ut-media" onclick="switchTab('upsert-tabs','ut-media')">Media & SEO</button>
+          <button class="tab-btn" data-tab="ut-advanced" onclick="switchTab('upsert-tabs','ut-advanced')">Advanced</button>
+        </div>
+
+        <!-- Tab 1: General -->
+        <div class="tab-panel active" id="ut-general">
+
+          <div class="upsert-section">
+            <div class="upsert-section-title">Basic Information</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="input-group"><label class="input-label">Product Title <span class="required">*</span></label><input class="glass-input" placeholder="e.g. Wireless Headphones"></div>
+              <div class="input-group"><label class="input-label">SKU</label><input class="glass-input" placeholder="WH-2026-001"></div>
+              <div class="input-group"><label class="input-label">Category <span class="required">*</span></label>
+                <select class="glass-input"><option value="">Select...</option><option>Electronics</option><option>Clothing</option><option>Furniture</option><option>Groceries</option></select>
+              </div>
+              <div class="input-group"><label class="input-label">Brand</label><input class="glass-input" placeholder="e.g. Sony"></div>
+            </div>
+          </div>
+
+          <div class="upsert-section">
+            <div class="upsert-section-title">Description</div>
+            <div class="input-group"><textarea class="glass-input" rows="4" placeholder="Write a detailed product description..."></textarea></div>
+          </div>
+
+          <!-- Accordion inside the panel -->
+          <div class="upsert-section">
+            <div class="upsert-section-title">Pricing & Inventory</div>
+            <div class="accordion-item open">
+              <div class="accordion-header" onclick="toggleAccordion(this)"><span>💰 Pricing</span><span class="acc-icon">▼</span></div>
+              <div class="accordion-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                  <div class="input-group"><label class="input-label">Price ($) <span class="required">*</span></label><input type="number" class="glass-input" placeholder="0.00"></div>
+                  <div class="input-group"><label class="input-label">Compare-at Price</label><input type="number" class="glass-input" placeholder="0.00"></div>
+                  <div class="input-group"><label class="input-label">Cost per Item</label><input type="number" class="glass-input" placeholder="0.00"></div>
+                </div>
+                <label class="check-group mt-3"><input type="checkbox"><span class="custom-check"></span><span>Charge tax on this product</span></label>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)"><span>📦 Inventory</span><span class="acc-icon">▼</span></div>
+              <div class="accordion-body">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  <div class="input-group"><label class="input-label">Stock Quantity</label><input type="number" class="glass-input" placeholder="0"></div>
+                  <div class="input-group"><label class="input-label">Low Stock Alert</label><input type="number" class="glass-input" placeholder="5"></div>
+                </div>
+                <label class="check-group mt-3"><input type="checkbox" checked><span class="custom-check"></span><span>Track quantity</span></label>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)"><span>🚚 Shipping</span><span class="acc-icon">▼</span></div>
+              <div class="accordion-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                  <div class="input-group"><label class="input-label">Weight (kg)</label><input type="number" class="glass-input" placeholder="0.0"></div>
+                  <div class="input-group"><label class="input-label">Length (cm)</label><input type="number" class="glass-input" placeholder="0"></div>
+                  <div class="input-group"><label class="input-label">Width (cm)</label><input type="number" class="glass-input" placeholder="0"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tab 2: Media & SEO -->
+        <div class="tab-panel" id="ut-media">
+          <div class="upsert-section">
+            <div class="upsert-section-title">Product Images</div>
+            <div class="p-6 border-2 border-dashed rounded-xl text-center" style="border-color:var(--glass-border);color:var(--color-text-muted)">
+              <div class="text-3xl mb-2">📁</div>
+              <p class="text-sm font-medium mb-1">Drag & drop images here</p>
+              <p class="text-xs mb-3">or click to browse (PNG, JPG, WebP up to 5MB)</p>
+              <button class="btn-secondary btn-sm">Browse Files</button>
+            </div>
+          </div>
+          <div class="upsert-section">
+            <div class="upsert-section-title">SEO Settings</div>
+            <div class="input-group"><label class="input-label">Meta Title</label><input class="glass-input" placeholder="Page title for search engines"></div>
+            <div class="input-group"><label class="input-label">Meta Description</label><textarea class="glass-input" rows="2" placeholder="Short description for search results..."></textarea></div>
+            <div class="input-group"><label class="input-label">URL Slug</label><input class="glass-input" placeholder="wireless-headphones"></div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Advanced -->
+        <div class="tab-panel" id="ut-advanced">
+          <div class="upsert-section">
+            <div class="upsert-section-title">Attributes & Tags</div>
+            <div class="input-group"><label class="input-label">Tags</label>
+              <div class="flex flex-wrap gap-2 mb-2">
+                <span class="tag-chip">New Arrival <span class="tag-remove" onclick="this.parentElement.remove()">×</span></span>
+                <span class="tag-chip">Featured <span class="tag-remove" onclick="this.parentElement.remove()">×</span></span>
+                <span class="tag-chip">Sale <span class="tag-remove" onclick="this.parentElement.remove()">×</span></span>
+              </div>
+              <input class="glass-input" placeholder="Add a tag...">
+            </div>
+          </div>
+          <div class="upsert-section">
+            <div class="upsert-section-title">Visibility</div>
+            <label class="check-group mb-2"><input type="radio" name="vis" checked><span class="custom-radio"></span><span>Published — visible to customers</span></label>
+            <label class="check-group mb-2"><input type="radio" name="vis"><span class="custom-radio"></span><span>Hidden — only visible to admins</span></label>
+            <label class="check-group"><input type="radio" name="vis"><span class="custom-radio"></span><span>Scheduled — set a publish date</span></label>
+          </div>
+          <div class="upsert-section">
+            <div class="upsert-section-title">Status</div>
+            <select class="glass-input" style="max-width:260px">
+              <option>Active</option><option>Draft</option><option>Archived</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sticky Footer -->
+    <div class="upsert-footer">
+      <button class="btn-ghost" onclick="closeUpsert()">Cancel</button>
+      <button class="btn-secondary">Save Draft</button>
+      <button class="btn-primary rounded-lg">Save & Close</button>
+    </div>
+
+  </div>
+
+</body>
+</html>
