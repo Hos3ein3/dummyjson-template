@@ -6,21 +6,13 @@
   <title>Rich Text Editor — Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  
+  <!-- Quill CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="css/dashboard.css">
-  <style>
-    .editor-toolbar { display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0.5rem; background: var(--glass-bg); border-bottom: 1px solid var(--glass-border); border-radius: 0.75rem 0.75rem 0 0; }
-    .editor-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 0.375rem; background: transparent; border: none; color: var(--color-text); cursor: pointer; transition: background 0.2s; }
-    .editor-btn:hover { background: var(--glass-bg-hover); }
-    .editor-btn.active { background: rgba(86,182,198,0.2); color: var(--btn-bg); }
-    .editor-content { min-height: 300px; padding: 1rem; outline: none; line-height: 1.6; color: var(--color-text); }
-    .editor-content img, .editor-content video { max-width: 100%; border-radius: 0.5rem; margin: 1rem 0; }
-    .editor-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
-    .editor-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
-    .editor-content h1 { font-size: 2rem; font-weight: bold; margin: 1rem 0; }
-    .editor-content h2 { font-size: 1.5rem; font-weight: bold; margin: 1rem 0; }
-    .editor-content blockquote { border-left: 4px solid var(--btn-bg); padding-left: 1rem; margin: 1rem 0; font-style: italic; opacity: 0.8; }
-  </style>
+  <link rel="stylesheet" href="css/rich-editor.css">
 </head>
 <body>
   <div class="mesh-bg"></div>
@@ -29,107 +21,156 @@
     <div class="dash-main">
       <header class="dash-topbar" id="topbar-container"></header>
       <main class="dash-content">
-        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Rich Text Editor</h1>
-        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Word-like editor with rich text formatting and media embedding</p>
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Advanced Rich Text Editor</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Full-featured WYSIWYG editor with slash commands, blocks, and media support.</p>
 
-        <div class="dash-card p-0" style="padding:0">
-          <div class="editor-toolbar" id="toolbar">
-            <button class="editor-btn" onclick="formatDoc('undo')" title="Undo">↩️</button>
-            <button class="editor-btn" onclick="formatDoc('redo')" title="Redo">↪️</button>
-            <div style="width:1px; background:var(--glass-border); margin:0 0.25rem"></div>
-            <button class="editor-btn" onclick="formatDoc('bold')" title="Bold"><b>B</b></button>
-            <button class="editor-btn" onclick="formatDoc('italic')" title="Italic"><i>I</i></button>
-            <button class="editor-btn" onclick="formatDoc('underline')" title="Underline"><u>U</u></button>
-            <button class="editor-btn" onclick="formatDoc('strikethrough')" title="Strikethrough"><s>S</s></button>
-            <button class="editor-btn" onclick="formatDoc('subscript')" title="Subscript">X<sub>2</sub></button>
-            <button class="editor-btn" onclick="formatDoc('superscript')" title="Superscript">X<sup>2</sup></button>
-            <div style="width:1px; background:var(--glass-border); margin:0 0.25rem"></div>
-            <select class="glass-input" style="padding:0.25rem; font-size:0.8rem; height:32px" onchange="formatDoc('formatBlock', this.value); this.selectedIndex=0">
-              <option value="" disabled selected>Format</option>
-              <option value="H1">Heading 1</option>
-              <option value="H2">Heading 2</option>
-              <option value="H3">Heading 3</option>
-              <option value="P">Paragraph</option>
-              <option value="BLOCKQUOTE">Quote</option>
-            </select>
-            <select class="glass-input" style="padding:0.25rem; font-size:0.8rem; height:32px" onchange="formatDoc('fontSize', this.value); this.selectedIndex=0">
-              <option value="" disabled selected>Size</option>
-              <option value="1">Small</option>
-              <option value="3">Normal</option>
-              <option value="5">Large</option>
-              <option value="7">Huge</option>
-            </select>
-            <div style="width:1px; background:var(--glass-border); margin:0 0.25rem"></div>
-            <button class="editor-btn" id="btn-align-left" onclick="formatDoc('justifyLeft')" title="Align Left">L</button>
-            <button class="editor-btn" id="btn-align-center" onclick="formatDoc('justifyCenter')" title="Align Center">C</button>
-            <button class="editor-btn" id="btn-align-right" onclick="formatDoc('justifyRight')" title="Align Right">R</button>
-            <button class="editor-btn" id="btn-align-justify" onclick="formatDoc('justifyFull')" title="Justify">J</button>
-            <div style="width:1px; background:var(--glass-border); margin:0 0.25rem"></div>
-            <button class="editor-btn" onclick="formatDoc('insertUnorderedList')" title="Bullet List">•</button>
-            <button class="editor-btn" onclick="formatDoc('insertOrderedList')" title="Numbered List">1.</button>
-            <div style="width:1px; background:var(--glass-border); margin:0 0.25rem"></div>
-            <input type="color" class="w-8 h-8 rounded cursor-pointer" oninput="formatDoc('foreColor', this.value)" title="Text Color" style="padding:0; border:none; background:transparent">
-            <input type="color" class="w-8 h-8 rounded cursor-pointer" value="#ffffff" oninput="formatDoc('hiliteColor', this.value)" title="Background Color" style="padding:0; border:none; background:transparent">
-            <div style="width:1px; background:var(--glass-border); margin:0 0.25rem"></div>
-            <button class="editor-btn" onclick="document.getElementById('img-upload').click()" title="Insert Image">🖼️</button>
-            <button class="editor-btn" onclick="document.getElementById('vid-upload').click()" title="Insert Video">🎬</button>
-            <button class="editor-btn" onclick="const url=prompt('Enter link URL:'); if(url) formatDoc('createLink', url)" title="Insert Link">🔗</button>
-            <button class="editor-btn" onclick="formatDoc('unlink')" title="Remove Link">🚫</button>
+        <div class="dash-card p-0 overflow-visible" style="padding:0">
+          
+          <!-- Custom Toolbar Container -->
+          <div id="quill-toolbar-container" class="editor-toolbar">
+            <!-- History -->
+            <span class="ql-formats">
+              <button class="ql-undo" title="Undo">↩️</button>
+              <button class="ql-redo" title="Redo">↪️</button>
+              <button class="ql-clean" title="Clear Formatting">🧽</button>
+            </span>
+            
+            <div class="toolbar-divider"></div>
+            
+            <!-- Typography -->
+            <span class="ql-formats">
+              <select class="ql-font" title="Font Family">
+                <option selected>Inter</option>
+                <option value="serif">Serif</option>
+                <option value="monospace">Monospace</option>
+                <option value="Outfit">Outfit</option>
+                <option value="Roboto">Roboto</option>
+              </select>
+              <select class="ql-size" title="Font Size">
+                <option value="10px">Small</option>
+                <option selected>Normal</option>
+                <option value="18px">Large</option>
+                <option value="32px">Huge</option>
+              </select>
+            </span>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- Blocks -->
+            <span class="ql-formats">
+              <select class="ql-header" title="Heading">
+                <option value="1">Heading 1</option>
+                <option value="2">Heading 2</option>
+                <option value="3">Heading 3</option>
+                <option selected>Paragraph</option>
+              </select>
+            </span>
+
+            <div class="toolbar-divider"></div>
+            
+            <!-- Inline Styles -->
+            <span class="ql-formats">
+              <button class="ql-bold" title="Bold"></button>
+              <button class="ql-italic" title="Italic"></button>
+              <button class="ql-underline" title="Underline"></button>
+              <button class="ql-strike" title="Strikethrough"></button>
+              <button class="ql-script" value="sub" title="Subscript"></button>
+              <button class="ql-script" value="super" title="Superscript"></button>
+              <button class="ql-code" title="Inline Code"></button>
+            </span>
+            
+            <div class="toolbar-divider"></div>
+            
+            <!-- Colors -->
+            <span class="ql-formats">
+              <select class="ql-color" title="Text Color"></select>
+              <select class="ql-background" title="Background Color"></select>
+            </span>
+            
+            <div class="toolbar-divider"></div>
+            
+            <!-- Paragraph Alignment -->
+            <span class="ql-formats">
+              <button class="ql-align" value="" title="Align Left"></button>
+              <button class="ql-align" value="center" title="Align Center"></button>
+              <button class="ql-align" value="right" title="Align Right"></button>
+              <button class="ql-align" value="justify" title="Justify"></button>
+            </span>
+            
+            <div class="toolbar-divider"></div>
+            
+            <!-- Lists & Indent -->
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered" title="Numbered List"></button>
+              <button class="ql-list" value="bullet" title="Bullet List"></button>
+              <button class="ql-list" value="check" title="Task List"></button>
+              <button class="ql-indent" value="-1" title="Decrease Indent"></button>
+              <button class="ql-indent" value="+1" title="Increase Indent"></button>
+            </span>
+            
+            <div class="toolbar-divider"></div>
+            
+            <!-- Blocks II -->
+            <span class="ql-formats">
+              <button class="ql-blockquote" title="Quote"></button>
+              <button class="ql-code-block" title="Code Block"></button>
+            </span>
+            
+            <div class="toolbar-divider"></div>
+            
+            <!-- Media -->
+            <span class="ql-formats">
+              <button class="ql-link" title="Link"></button>
+              <button class="ql-image" title="Image"></button>
+              <button class="ql-video" title="Video"></button>
+            </span>
           </div>
-          <div class="editor-content" id="editor" contenteditable="true" spellcheck="false">
-            <p>Welcome to the <b>Rich Text Editor</b>.</p>
-            <p>You can type your content here, format it, and even embed media.</p>
+
+          <!-- Slash Command Overlay (Hidden by default) -->
+          <div id="slash-commands" class="slash-command-menu" style="display:none">
+            <div class="cmd-item" data-action="h1"><span class="cmd-icon">H1</span><div class="cmd-text">Heading 1</div></div>
+            <div class="cmd-item" data-action="h2"><span class="cmd-icon">H2</span><div class="cmd-text">Heading 2</div></div>
+            <div class="cmd-item" data-action="quote"><span class="cmd-icon">❞</span><div class="cmd-text">Quote</div></div>
+            <div class="cmd-item" data-action="code"><span class="cmd-icon">{}</span><div class="cmd-text">Code Block</div></div>
+            <div class="cmd-item" data-action="divider"><span class="cmd-icon">―</span><div class="cmd-text">Divider</div></div>
+          </div>
+
+          <!-- Bubble Menu (Hidden by default) -->
+          <div id="bubble-menu" class="bubble-menu" style="display:none">
+            <button class="b-btn" data-format="bold">B</button>
+            <button class="b-btn" data-format="italic">I</button>
+            <button class="b-btn" data-format="underline">U</button>
+            <button class="b-btn" data-format="link">🔗</button>
+          </div>
+          
+          <div class="editor-content-wrapper">
+            <div id="rich-editor-container"></div>
+          </div>
+
+          <div class="editor-footer">
+            <div id="editor-stats" class="text-xs text-gray-500 font-medium">0 words · 0 chars · ~0 min read</div>
+            <div class="flex gap-2">
+              <button class="btn-ghost btn-sm" onclick="exportDoc('md')">Export MD</button>
+              <button class="btn-ghost btn-sm" onclick="exportDoc('html')">Export HTML</button>
+              <button class="btn-primary rounded-lg btn-sm" onclick="saveContent()">Save Draft</button>
+            </div>
           </div>
         </div>
 
-        <input type="file" id="img-upload" accept="image/*" style="display:none" onchange="insertMedia(this, 'image')">
-        <input type="file" id="vid-upload" accept="video/*" style="display:none" onchange="insertMedia(this, 'video')">
-
-        <div class="mt-6 flex justify-end">
-          <button class="btn-primary rounded-xl" onclick="saveContent()">Save Document</button>
-        </div>
       </main>
     </div>
   </div>
+
+  <!-- Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  
   <script src="../js/api.js"></script>
   <script src="js/dashboard-core.js"></script>
+  <script src="js/rich-editor.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      initDashboard([{label:'Visuals'},{label:'Rich Text Editor'}]);
+      initDashboard([{label:'Forms'},{label:'Advanced Editor'}]);
     });
-
-    function formatDoc(cmd, value=null) {
-      document.execCommand(cmd, false, value);
-      document.getElementById('editor').focus();
-    }
-
-    function insertMedia(input, type) {
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const url = URL.createObjectURL(file);
-        
-        let html = '';
-        if (type === 'image') {
-          html = `<img src="${url}" alt="Embedded Image">`;
-        } else if (type === 'video') {
-          html = `<video controls src="${url}" style="max-width:100%; border-radius:0.5rem"></video>`;
-        }
-        
-        document.getElementById('editor').focus();
-        document.execCommand('insertHTML', false, html);
-        // Reset input
-        input.value = '';
-      }
-    }
-
-    function saveContent() {
-      const btn = document.querySelector('.btn-primary');
-      btn.classList.add('btn-loading');
-      setTimeout(() => {
-        btn.classList.remove('btn-loading');
-        dashToast('Document saved successfully!', 'success');
-      }, 1000);
-    }
   </script>
 </body>
 </html>

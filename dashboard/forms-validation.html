@@ -25,7 +25,8 @@
             <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Real-time Validation</h3>
             <form id="validation-form" onsubmit="event.preventDefault();if(validateForm('validation-form'))dashToast('Form is valid!','success');else dashToast('Fix errors first','error')">
               <div class="input-group">
-                <label class="input-label">Full Name <span class="required">*</span><span class="info-badge">!<span class="info-tooltip">Enter your legal full name (minimum 3 characters).</span></span></label>
+                <label class="input-label">Full Name <span class="required">*</span>
+                  <span class="info-badge">!<span class="info-tooltip">Enter your legal full name (minimum 3 characters).</span></span></label>
                 <input class="glass-input" data-validate="required|min:3" oninput="validateField(this)" placeholder="Min 3 characters">
                 <div class="input-error-msg"></div>
               </div>
@@ -93,6 +94,33 @@
               <label class="input-label">⚠️ Warning State</label>
               <input class="glass-input" value="john123" style="border-color:var(--star)">
               <div class="input-helper" style="color:var(--star)">Username may already be taken</div>
+            </div>
+
+            <hr class="my-5" style="border-color:var(--glass-border)">
+
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Select Validation States</h3>
+            <div class="input-group has-success">
+              <label class="input-label">✅ Valid Select</label>
+              <select class="glass-input">
+                <option>Option 1</option>
+              </select>
+              <div class="input-helper" style="color:var(--success)">Valid option selected</div>
+            </div>
+            <div class="input-group has-error">
+              <label class="input-label">❌ Invalid Select</label>
+              <select class="glass-input">
+                <option value="">Choose an option...</option>
+                <option>Option 1</option>
+              </select>
+              <div class="input-error-msg" style="display:block">Please select an option</div>
+            </div>
+            <div class="input-group has-warning">
+              <label class="input-label">⚠️ Warning Select</label>
+              <select class="glass-input">
+                <option>Deprecated Option</option>
+                <option>Option 1</option>
+              </select>
+              <div class="input-helper" style="color:var(--star)">This option will be removed soon</div>
             </div>
           </div>
 

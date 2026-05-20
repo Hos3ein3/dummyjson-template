@@ -1,0 +1,203 @@
+/* ── Advanced Rich Text Editor CSS ── */
+
+.editor-toolbar {
+  padding: 0.75rem;
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: 0.75rem 0.75rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.editor-toolbar .ql-formats {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--glass-border);
+  margin: 0 0.25rem;
+}
+
+/* Override Quill Toolbar Styles to match Glass Theme */
+.ql-toolbar.ql-snow {
+  border: none !important;
+  padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.ql-snow .ql-picker, .ql-snow .ql-picker-label {
+  color: var(--color-text) !important;
+}
+.ql-snow .ql-stroke {
+  stroke: var(--color-text) !important;
+}
+.ql-snow .ql-fill {
+  fill: var(--color-text) !important;
+}
+
+.ql-snow .ql-active .ql-stroke { stroke: var(--color-accent) !important; }
+.ql-snow .ql-active .ql-fill { fill: var(--color-accent) !important; }
+.ql-snow .ql-active.ql-picker { color: var(--color-accent) !important; }
+.ql-snow .ql-active.ql-picker .ql-picker-label { color: var(--color-accent) !important; }
+
+button.ql-active {
+  background: rgba(86,182,198,0.15) !important;
+  border-radius: 4px;
+}
+
+.ql-snow .ql-picker-options {
+  background: var(--glass-bg-hover) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 0.5rem 0;
+}
+
+.ql-snow .ql-picker-item:hover, .ql-snow .ql-picker-item.ql-selected {
+  color: var(--color-accent) !important;
+}
+.ql-snow .ql-picker-item {
+  padding: 0.25rem 1rem !important;
+}
+
+.editor-content-wrapper {
+  position: relative;
+}
+
+/* Editor Container */
+#rich-editor-container {
+  min-height: 400px;
+  padding: 1.5rem 2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  border: none !important;
+}
+
+.ql-container.ql-snow {
+  border: none !important;
+}
+
+/* Content Formatting */
+.ql-editor {
+  padding: 0;
+}
+.ql-editor p { margin-bottom: 0.75rem; }
+.ql-editor h1 { font-family: 'Outfit', sans-serif; font-size: 2.25rem; font-weight: 700; margin: 1.5rem 0 1rem; }
+.ql-editor h2 { font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 700; margin: 1.25rem 0 0.75rem; }
+.ql-editor h3 { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+.ql-editor blockquote { 
+  border-left: 4px solid var(--btn-bg); 
+  padding-left: 1rem; 
+  margin: 1rem 0; 
+  font-style: italic; 
+  color: var(--color-text-secondary); 
+  background: rgba(86,182,198,0.05);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0 4px 4px 0;
+}
+.ql-editor pre.ql-syntax {
+  background: var(--glass-bg-hover);
+  color: var(--color-text);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+}
+.ql-editor img {
+  border-radius: 8px;
+  max-width: 100%;
+  margin: 1rem auto;
+  display: block;
+}
+
+/* Footer Stats */
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(0,0,0,0.02);
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+html.dark .editor-footer {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Slash Commands Menu */
+.slash-command-menu {
+  position: absolute;
+  background: var(--glass-bg-hover);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  padding: 0.5rem;
+  z-index: 100;
+  width: 220px;
+}
+.cmd-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cmd-item:hover, .cmd-item.active {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+}
+.cmd-icon {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.8;
+  width: 24px;
+  text-align: center;
+}
+.cmd-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Bubble Menu */
+.bubble-menu {
+  position: absolute;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  padding: 0.25rem;
+  z-index: 100;
+  display: flex;
+  gap: 0.25rem;
+}
+.bubble-menu .b-btn {
+  background: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+.bubble-menu .b-btn:hover {
+  background: var(--glass-bg-hover);
+}

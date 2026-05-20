@@ -17,18 +17,18 @@
       <header class="dash-topbar" id="topbar-container"></header>
       <main class="dash-content">
         <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Data Grid</h1>
-        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Sortable, searchable, paginated data table with selection</p>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Advanced data table with filtering, sorting, pagination, page size &amp; bulk actions</p>
 
         <!-- Products Grid -->
         <div class="mb-8">
           <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Products</h3>
-          <div id="products-grid"><div class="partial-loader"><div class="spinner"></div></div></div>
+          <div id="products-grid"></div>
         </div>
 
         <!-- Users Grid -->
         <div>
           <h3 class="font-semibold mb-3" style="font-family:'Outfit';color:var(--color-text)">Users</h3>
-          <div id="users-grid"><div class="partial-loader"><div class="spinner"></div></div></div>
+          <div id="users-grid"></div>
         </div>
       </main>
     </div>
@@ -41,18 +41,34 @@
     document.addEventListener('DOMContentLoaded', async () => {
       initDashboard([{label:'Data'},{label:'Data Grid'}]);
 
-      // Products grid
+      // Products grid — with filters and actions
       grid = new DataGrid('products-grid', {
-        perPage: 8,
+        globalVar: 'grid',
+        perPage: 10,
+        perPageOptions: [5, 10, 15, 25, 50],
         defaultSort: 'title',
         columns: [
           { key: 'id', label: 'ID' },
           { key: 'thumbnail', label: 'Image', render: (v) => `<img src="${v}" alt="" class="w-10 h-10 rounded-lg object-contain" style="background:var(--glass-bg)">` },
           { key: 'title', label: 'Title', render: (v) => `<span class="font-medium" style="color:var(--color-text)">${v}</span>` },
           { key: 'category', label: 'Category', render: (v) => `<span class="badge text-xs">${v}</span>` },
-          { key: 'price', label: 'Price', render: (v) => `$${v.toFixed(2)}` },
-          { key: 'rating', label: 'Rating', render: (v) => `⭐ ${v.toFixed(1)}` },
+          { key: 'brand', label: 'Brand' },
+          { key: 'price', label: 'Price', render: (v) => `$${Number(v).toFixed(2)}` },
+          { key: 'rating', label: 'Rating', render: (v) => `⭐ ${Number(v).toFixed(1)}` },
           { key: 'stock', label: 'Stock', render: (v) => `<span style="color:${v>10?'var(--success)':'var(--error)'}">${v}</span>` },
+        ],
+        filters: [
+          { key: 'category', label: 'Category', type: 'select' },
+          { key: 'brand', label: 'Brand', type: 'text' },
+          { key: 'price', label: 'Price Range', type: 'range' },
+          { key: 'rating', label: 'Rating Range', type: 'range' },
+          { key: 'stock', label: 'Stock Range', type: 'range' },
+        ],
+        actions: [
+          { label: 'Add Product', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`, class: 'btn-primary btn-sm rounded-lg', onClick: "dashToast('Add Product dialog would open here','success')" },
+          { label: 'Export CSV', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`, class: 'btn-secondary btn-sm', onClick: "dashToast('CSV exported!','success')" },
+          { label: 'Print', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>`, class: 'btn-ghost btn-sm', onClick: "window.print()" },
+          { label: 'Refresh', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`, class: 'btn-ghost btn-sm', onClick: "dashToast('Refreshed!','success')" },
         ]
       });
 
@@ -61,9 +77,11 @@
         grid.setData(data.products);
       } catch(e) { document.getElementById('products-grid').innerHTML = '<p style="color:var(--color-text-muted)">Failed to load</p>'; }
 
-      // Users grid
+      // Users grid — with filters and actions
       userGrid = new DataGrid('users-grid', {
-        perPage: 6,
+        globalVar: 'userGrid',
+        perPage: 10,
+        perPageOptions: [5, 10, 25, 50],
         columns: [
           { key: 'id', label: 'ID' },
           { key: 'image', label: 'Avatar', render: (v) => `<img src="${v}" alt="" class="w-8 h-8 rounded-full object-cover">` },
@@ -71,7 +89,19 @@
           { key: 'lastName', label: 'Last Name' },
           { key: 'email', label: 'Email' },
           { key: 'age', label: 'Age' },
+          { key: 'gender', label: 'Gender', render: (v) => `<span class="badge text-xs">${v || '—'}</span>` },
           { key: 'role', label: 'Role', render: (v) => `<span class="badge text-xs">${v||'user'}</span>` },
+        ],
+        filters: [
+          { key: 'gender', label: 'Gender', type: 'select' },
+          { key: 'role', label: 'Role', type: 'select' },
+          { key: 'age', label: 'Age Range', type: 'range' },
+          { key: 'email', label: 'Email', type: 'text' },
+        ],
+        actions: [
+          { label: 'Add User', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>`, class: 'btn-primary btn-sm rounded-lg', onClick: "dashToast('Add User dialog would open here','success')" },
+          { label: 'Export', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`, class: 'btn-secondary btn-sm', onClick: "dashToast('Users exported!','success')" },
+          { label: 'Refresh', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`, class: 'btn-ghost btn-sm', onClick: "dashToast('Refreshed!','success')" },
         ]
       });
 

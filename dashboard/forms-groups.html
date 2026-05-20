@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Groups — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],heading:['Outfit','sans-serif']}}}}</script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <style>
+    /* Wizard Styles */
+    .wizard-steps { display: flex; justify-content: space-between; position: relative; margin-bottom: 2rem; }
+    .wizard-steps::before { content: ''; position: absolute; top: 14px; left: 0; right: 0; height: 2px; background: var(--glass-border); z-index: 1; }
+    .wizard-step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex: 1; }
+    .wizard-step-circle { width: 30px; height: 30px; border-radius: 50%; background: var(--glass-bg-hover); border: 2px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; color: var(--color-text-muted); transition: all 0.3s; }
+    .wizard-step.active .wizard-step-circle { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-text); }
+    .wizard-step.completed .wizard-step-circle { background: var(--success); border-color: var(--success); color: white; }
+    .wizard-step-label { font-size: 0.75rem; font-weight: 600; color: var(--color-text-muted); }
+    .wizard-step.active .wizard-step-label { color: var(--color-text); }
+    .wizard-panel { display: none; animation: fadeIn 0.3s ease; }
+    .wizard-panel.active { display: block; }
+    
+    /* Accordion Forms */
+    .form-accordion { border: 1px solid var(--glass-border); border-radius: 0.75rem; overflow: hidden; margin-bottom: 1rem; }
+    .form-accordion-header { padding: 1rem; background: var(--glass-bg-hover); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--color-text); }
+    .form-accordion-body { padding: 1rem; border-top: 1px solid var(--glass-border); display: none; }
+    .form-accordion.open .form-accordion-body { display: block; }
+    .form-accordion-header .status-icon { font-size: 1.25rem; }
+  </style>
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  <div id="app" class="dash-layout">
+    <aside class="dash-sidebar" id="sidebar-container"></aside>
+    <div class="dash-main">
+      <header class="dash-topbar" id="topbar-container"></header>
+      <main class="dash-content">
+        <h1 class="text-2xl font-bold mb-1" style="font-family:'Outfit';color:var(--color-text)">Form Groups</h1>
+        <p class="text-sm mb-6" style="color:var(--color-text-muted)">Advanced layout patterns for complex forms: Tabs, Accordions, and Wizards.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Tab Form Group -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Tabbed Form</h3>
+            <div id="tab-form-container">
+              <div class="tabs mb-4">
+                <button class="tab-btn active" data-tab="tf-1" onclick="switchTab('tab-form-container','tf-1')">Personal</button>
+                <button class="tab-btn" data-tab="tf-2" onclick="switchTab('tab-form-container','tf-2')">Account</button>
+                <button class="tab-btn" data-tab="tf-3" onclick="switchTab('tab-form-container','tf-3')">Review</button>
+              </div>
+              <div class="tab-panel active" id="tf-1">
+                <div class="input-group"><label class="input-label">First Name</label><input class="glass-input" placeholder="John"></div>
+                <div class="input-group"><label class="input-label">Last Name</label><input class="glass-input" placeholder="Doe"></div>
+                <button class="btn-primary rounded-xl" onclick="switchTab('tab-form-container','tf-2')">Next: Account</button>
+              </div>
+              <div class="tab-panel" id="tf-2">
+                <div class="input-group"><label class="input-label">Email</label><input class="glass-input" type="email" placeholder="john@example.com"></div>
+                <div class="input-group"><label class="input-label">Password</label><input class="glass-input" type="password"></div>
+                <button class="btn-secondary mr-2" onclick="switchTab('tab-form-container','tf-1')">Back</button>
+                <button class="btn-primary rounded-xl" onclick="switchTab('tab-form-container','tf-3')">Next: Review</button>
+              </div>
+              <div class="tab-panel" id="tf-3">
+                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4 text-sm">
+                  <p class="mb-1"><strong>Name:</strong> John Doe</p>
+                  <p><strong>Email:</strong> john@example.com</p>
+                </div>
+                <button class="btn-secondary mr-2" onclick="switchTab('tab-form-container','tf-2')">Back</button>
+                <button class="btn-success rounded-xl" onclick="dashToast('Form Submitted!', 'success')">Submit Form</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Form Group -->
+          <div class="dash-card">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Accordion Form</h3>
+            
+            <div class="form-accordion open" id="acc-1">
+              <div class="form-accordion-header" onclick="toggleAcc('acc-1')">
+                <span>1. Shipping Address</span>
+                <span class="status-icon text-gray-400">📝</span>
+              </div>
+              <div class="form-accordion-body">
+                <div class="input-group"><label class="input-label">Street Address</label><input class="glass-input"></div>
+                <div class="input-group"><label class="input-label">City</label><input class="glass-input"></div>
+                <button class="btn-primary rounded-xl btn-sm" onclick="completeAcc('acc-1', 'acc-2')">Continue to Billing</button>
+              </div>
+            </div>
+
+            <div class="form-accordion" id="acc-2">
+              <div class="form-accordion-header" onclick="toggleAcc('acc-2')">
+                <span>2. Billing Details</span>
+                <span class="status-icon text-gray-400">🔒</span>
+              </div>
+              <div class="form-accordion-body">
+                <label class="check-group mb-4"><input type="checkbox" checked><span class="custom-check"></span><span>Same as shipping</span></label>
+                <button class="btn-primary rounded-xl btn-sm" onclick="completeAcc('acc-2', 'acc-3')">Continue to Payment</button>
+              </div>
+            </div>
+
+            <div class="form-accordion" id="acc-3">
+              <div class="form-accordion-header" onclick="toggleAcc('acc-3')">
+                <span>3. Payment Method</span>
+                <span class="status-icon text-gray-400">💳</span>
+              </div>
+              <div class="form-accordion-body">
+                <div class="input-group"><label class="input-label">Card Number</label><input class="glass-input" placeholder="**** **** **** ****"></div>
+                <button class="btn-success rounded-xl" onclick="dashToast('Order Placed!', 'success')">Place Order</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wizard Form Group -->
+          <div class="dash-card lg:col-span-2">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Multi-step Wizard</h3>
+            
+            <div class="wizard-steps">
+              <div class="wizard-step active" id="ws-1"><div class="wizard-step-circle">1</div><div class="wizard-step-label">Basic Info</div></div>
+              <div class="wizard-step" id="ws-2"><div class="wizard-step-circle">2</div><div class="wizard-step-label">Company</div></div>
+              <div class="wizard-step" id="ws-3"><div class="wizard-step-circle">3</div><div class="wizard-step-label">Preferences</div></div>
+              <div class="wizard-step" id="ws-4"><div class="wizard-step-circle">4</div><div class="wizard-step-label">Complete</div></div>
+            </div>
+
+            <div class="wizard-panel active" id="wp-1">
+              <h4 class="font-bold mb-4 text-lg">Tell us about yourself</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="input-group"><label class="input-label">First Name</label><input class="glass-input"></div>
+                <div class="input-group"><label class="input-label">Last Name</label><input class="glass-input"></div>
+              </div>
+              <div class="flex justify-end mt-4">
+                <button class="btn-primary rounded-xl" onclick="nextWizardStep(1)">Next Step</button>
+              </div>
+            </div>
+
+            <div class="wizard-panel" id="wp-2">
+              <h4 class="font-bold mb-4 text-lg">Company Details</h4>
+              <div class="input-group"><label class="input-label">Company Name</label><input class="glass-input"></div>
+              <div class="input-group"><label class="input-label">Role</label><input class="glass-input"></div>
+              <div class="flex justify-between mt-4">
+                <button class="btn-secondary" onclick="prevWizardStep(2)">Back</button>
+                <button class="btn-primary rounded-xl" onclick="nextWizardStep(2)">Next Step</button>
+              </div>
+            </div>
+
+            <div class="wizard-panel" id="wp-3">
+              <h4 class="font-bold mb-4 text-lg">Your Preferences</h4>
+              <div class="mb-4">
+                <label class="check-group mb-2"><input type="checkbox"><span class="custom-check"></span><span>Subscribe to newsletter</span></label>
+                <label class="check-group"><input type="checkbox"><span class="custom-check"></span><span>Enable two-factor authentication</span></label>
+              </div>
+              <div class="flex justify-between mt-4">
+                <button class="btn-secondary" onclick="prevWizardStep(3)">Back</button>
+                <button class="btn-primary rounded-xl" onclick="nextWizardStep(3)">Finish</button>
+              </div>
+            </div>
+
+            <div class="wizard-panel text-center py-8" id="wp-4">
+              <div class="text-5xl mb-4">🎉</div>
+              <h4 class="font-bold text-xl mb-2">All set!</h4>
+              <p class="text-sm text-gray-500 mb-6">Your profile has been fully configured.</p>
+              <button class="btn-success rounded-xl px-8" onclick="dashToast('Setup Complete!', 'success')">Go to Dashboard</button>
+            </div>
+
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="js/dashboard-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard([{label:'Forms'},{label:'Form Groups'}]);
+    });
+
+    // Accordion Logic
+    function toggleAcc(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    function completeAcc(currentId, nextId) {
+      const current = document.getElementById(currentId);
+      current.classList.remove('open');
+      current.querySelector('.status-icon').innerHTML = '✅';
+      current.querySelector('.status-icon').style.color = 'var(--success)';
+      
+      const next = document.getElementById(nextId);
+      if(next) next.classList.add('open');
+    }
+
+    // Wizard Logic
+    function nextWizardStep(currentStep) {
+      document.getElementById(`wp-${currentStep}`).classList.remove('active');
+      document.getElementById(`wp-${currentStep + 1}`).classList.add('active');
+      
+      const step = document.getElementById(`ws-${currentStep}`);
+      step.classList.remove('active');
+      step.classList.add('completed');
+      step.querySelector('.wizard-step-circle').innerHTML = '✓';
+      
+      document.getElementById(`ws-${currentStep + 1}`).classList.add('active');
+    }
+
+    function prevWizardStep(currentStep) {
+      document.getElementById(`wp-${currentStep}`).classList.remove('active');
+      document.getElementById(`wp-${currentStep - 1}`).classList.add('active');
+      
+      document.getElementById(`ws-${currentStep}`).classList.remove('active');
+      
+      const prev = document.getElementById(`ws-${currentStep - 1}`);
+      prev.classList.add('active');
+      prev.classList.remove('completed');
+      prev.querySelector('.wizard-step-circle').innerHTML = (currentStep - 1).toString();
+    }
+  </script>
+</body>
+</html>

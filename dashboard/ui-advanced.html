@@ -45,6 +45,25 @@
       <button class="btn-secondary rounded-xl" onclick="openCanvasMenuIos()">iOS Action Sheet</button>
       <button class="btn-secondary rounded-xl" onclick="openControlCenter()">Control Center</button>
       <button class="btn-secondary rounded-xl" onclick="openControlCenterFull()">Full Control Center</button>
+      <button class="btn-secondary rounded-xl" onclick="openControlCenterBottom()">Bottom-up Control Center</button>
+    </div>
+
+    <h3 class="font-semibold mb-3 mt-6" style="font-family:'Outfit';color:var(--color-text)">Glassy Button Variants</h3>
+    <div class="flex gap-3 flex-wrap">
+      <button class="btn-glass-indigo">Indigo Glass</button>
+      <button class="btn-glass-rose">Rose Glass</button>
+      <button class="btn-glass-emerald">Emerald Glass</button>
+      <button class="btn-glass-cyan">Cyan Glass</button>
+      <button class="btn-glass-violet">Violet Glass</button>
+      <button class="btn-glass-dark">Dark Glass</button>
+      <button class="btn-glass-aurora">Aurora Glow</button>
+      <button class="btn-glass-ice">Ice Frost</button>
+      <button class="btn-glass-fire">Fire Gradient</button>
+      <button class="btn-glass-ocean">Ocean Depth</button>
+      <button class="btn-neon-green">Neon Green</button>
+      <button class="btn-neon-purple">Neon Purple</button>
+      <button class="btn-neon-pink">Neon Pink</button>
+      <button class="btn-ripple" onclick="const rect=this.getBoundingClientRect();const d=document.createElement('div');d.className='ripple-effect';d.style.left=event.clientX-rect.left+'px';d.style.top=event.clientY-rect.top+'px';d.style.width='50px';d.style.height='50px';this.appendChild(d);setTimeout(()=>d.remove(),600);">Ripple Effect</button>
     </div>
   </div>
 
@@ -205,6 +224,53 @@
   </div>
 </div>
 
+<!-- Bottom-Up Control Center -->
+<div class="cc-bottom-overlay" id="cc-bottom-overlay" onclick="closeControlCenterBottom()"></div>
+<div class="control-center-bottom" id="cc-bottom">
+  <div class="cc-bottom-handle"></div>
+  <div class="cc-bottom-grid">
+    <div class="cc-bottom-block active" onclick="this.classList.toggle('active')">
+      <div class="cc-bottom-icon">📶</div>
+      <span class="text-sm font-semibold">Wi-Fi</span>
+      <span class="text-xs text-muted" style="color:var(--color-text-muted)">DummyNet</span>
+    </div>
+    <div class="cc-bottom-block active" onclick="this.classList.toggle('active')">
+      <div class="cc-bottom-icon">ᛒ</div>
+      <span class="text-sm font-semibold">Bluetooth</span>
+      <span class="text-xs text-muted" style="color:var(--color-text-muted)">AirPods Pro</span>
+    </div>
+    <div class="cc-bottom-block" onclick="this.classList.toggle('active')">
+      <div class="cc-bottom-icon">✈️</div>
+      <span class="text-sm font-semibold">Airplane Mode</span>
+      <span class="text-xs text-muted" style="color:var(--color-text-muted)">Off</span>
+    </div>
+    <div class="cc-bottom-block" onclick="this.classList.toggle('active')">
+      <div class="cc-bottom-icon">🌙</div>
+      <span class="text-sm font-semibold">Do Not Disturb</span>
+      <span class="text-xs text-muted" style="color:var(--color-text-muted)">Off</span>
+    </div>
+    <div class="cc-bottom-slider">
+      <span class="text-lg">☼</span>
+      <input type="range" class="flex-1" style="accent-color:var(--btn-bg)">
+    </div>
+    <div class="cc-bottom-slider">
+      <span class="text-lg">🔊</span>
+      <input type="range" class="flex-1" style="accent-color:var(--btn-bg)">
+    </div>
+    <div class="cc-bottom-slider" style="justify-content:center; padding:1.5rem">
+      <div class="text-center">
+        <h4 class="font-bold">Music Player</h4>
+        <p class="text-xs text-gray-500 mb-4">Not Playing</p>
+        <div class="flex gap-6 justify-center">
+          <button class="btn-ghost p-2">⏮️</button>
+          <button class="btn-ghost p-2 text-2xl">▶️</button>
+          <button class="btn-ghost p-2">⏭️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main></div></div><script src="../js/api.js"></script><script src="js/dashboard-core.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
@@ -239,6 +305,8 @@ function openCanvasMenu(){document.getElementById('canvas-overlay').classList.ad
 function openCanvasMenuIos(){document.getElementById('canvas-overlay').classList.add('open');document.getElementById('canvas-menu-ios').classList.add('open')}
 function openControlCenter(){document.getElementById('canvas-overlay').classList.add('open');document.getElementById('control-center').classList.add('open')}
 function openControlCenterFull(){document.getElementById('control-center-full').classList.add('open')}
+function openControlCenterBottom(){document.getElementById('cc-bottom-overlay').classList.add('open');document.getElementById('cc-bottom').classList.add('open')}
+function closeControlCenterBottom(){document.getElementById('cc-bottom-overlay').classList.remove('open');document.getElementById('cc-bottom').classList.remove('open')}
 function closeCanvasMenu(){document.getElementById('canvas-overlay').classList.remove('open');document.getElementById('canvas-menu').classList.remove('open');document.getElementById('canvas-menu-ios').classList.remove('open');document.getElementById('control-center').classList.remove('open');document.getElementById('control-center-full').classList.remove('open')}
 function filterAutocomplete(q){
   document.querySelectorAll('#auto-list .autocomplete-item').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q.toLowerCase())?'':'none'});

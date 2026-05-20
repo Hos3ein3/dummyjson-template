@@ -46,34 +46,49 @@
 
           <!-- Loaders -->
           <div class="dash-card">
-            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Loaders</h3>
-            <div class="space-y-4">
+            <h3 class="font-semibold mb-4" style="font-family:'Outfit';color:var(--color-text)">Loaders & Spinners</h3>
+            <div class="space-y-6">
+              
               <div>
-                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">FULL PAGE LOADER</p>
-                <button class="btn-primary rounded-lg btn-sm" onclick="showFullLoader('Loading data...');setTimeout(()=>{hideFullLoader();dashToast('Loaded!','success')},2000)">Show Full Loader (2s)</button>
-              </div>
-              <div>
-                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">PARTIAL LOADER</p>
-                <div id="partial-demo" class="p-4 rounded-lg" style="background:var(--glass-bg);min-height:60px;display:flex;align-items:center;justify-content:center">
-                  <span class="text-sm" style="color:var(--color-text-muted)">Content loaded</span>
-                </div>
-                <button class="btn-secondary btn-sm mt-2" onclick="showPartialLoader('partial-demo');setTimeout(()=>{document.getElementById('partial-demo').innerHTML='<span class=\'text-sm\' style=\'color:var(--color-text-muted)\'>Content loaded</span>';dashToast('Section loaded','success')},1500)">Reload Section</button>
-              </div>
-              <div>
-                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">INLINE SPINNER</p>
-                <div class="flex items-center gap-3">
-                  <div class="spinner" style="width:24px;height:24px;border-width:2px"></div>
-                  <div class="spinner" style="width:32px;height:32px"></div>
-                  <div class="spinner" style="width:40px;height:40px"></div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">FULL PAGE & CARD LOADERS</p>
+                <div class="flex gap-3">
+                  <button class="btn-primary rounded-lg btn-sm" onclick="showFullLoader('Loading data...');setTimeout(()=>{hideFullLoader();dashToast('Loaded!','success')},2000)">Full Page Loader</button>
+                  <button class="btn-secondary btn-sm" onclick="const c=this.closest('.dash-card');c.classList.add('card-loading');c.insertAdjacentHTML('beforeend','<div class=\'card-loader-overlay\'><div class=\'spinner\'></div></div>');setTimeout(()=>{c.classList.remove('card-loading');c.querySelector('.card-loader-overlay').remove();},2000)">Card Loader</button>
                 </div>
               </div>
+
+              <div>
+                <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">CSS ANIMATED LOADERS (15+)</p>
+                <div class="grid grid-cols-4 sm:grid-cols-5 gap-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
+                  <div class="flex flex-col items-center gap-2"><div class="spinner" style="width:30px;height:30px"></div><span class="text-[10px] text-gray-500">Spinner</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-gear"></div><span class="text-[10px] text-gray-500">Gear</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-pacman"></div><span class="text-[10px] text-gray-500">Pacman</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-snake"><span></span><span></span><span></span><span></span><span></span></div><span class="text-[10px] text-gray-500">Snake</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-cube-3d"></div><span class="text-[10px] text-gray-500">3D Cube</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-wifi"><span></span><span></span><span></span></div><span class="text-[10px] text-gray-500">WiFi</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-equalizer"><span></span><span></span><span></span><span></span><span></span></div><span class="text-[10px] text-gray-500">Equalizer</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-hourglass"></div><span class="text-[10px] text-gray-500">Hourglass</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-atom"></div><span class="text-[10px] text-gray-500">Atom</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-water"></div><span class="text-[10px] text-gray-500">Drop</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-fire"></div><span class="text-[10px] text-gray-500">Fire</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-signal"><span></span><span></span><span></span><span></span></div><span class="text-[10px] text-gray-500">Signal</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-battery"></div><span class="text-[10px] text-gray-500">Battery</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-comet"></div><span class="text-[10px] text-gray-500">Comet</span></div>
+                  <div class="flex flex-col items-center gap-2"><div class="loader-neon-ring"></div><span class="text-[10px] text-gray-500">Neon Ring</span></div>
+                </div>
+              </div>
+
               <div>
                 <p class="text-xs font-semibold mb-2" style="color:var(--color-text-muted)">SKELETON LOADING</p>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
                   <div class="skeleton" style="width:48px;height:48px;border-radius:50%"></div>
-                  <div class="flex-1"><div class="skeleton mb-2" style="height:12px;width:60%"></div><div class="skeleton" style="height:10px;width:40%"></div></div>
+                  <div class="flex-1">
+                    <div class="skeleton mb-2" style="height:12px;width:60%"></div>
+                    <div class="skeleton" style="height:10px;width:40%"></div>
+                  </div>
                 </div>
               </div>
+              
             </div>
           </div>
 
